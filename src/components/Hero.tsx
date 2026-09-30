@@ -6,41 +6,41 @@ import { WEDDING, HERO_IMAGE } from "@/config/wedding";
 
 const EASE = [0.22, 0.61, 0.36, 1] as const;
 
-// Full-bleed photo 6 with a slow zoom + a dark scrim. The entrance is THE
-// orchestrated moment: eyebrow → Leon → & → Favour → rule → meta, staggered,
-// beginning as the loader clears (`start`).
+// Full-bleed photo 6. The loader→hero is ONE continuous move: as the loader
+// dissolves the photo scales 1.15→1.0 and the scrim fades in — the loader
+// becomes the hero. Names rise out of masks (not fades); the rule draws; the
+// meta rises. Then a very slow ambient zoom keeps the photo alive.
 export default function Hero({ start }: { start: boolean }) {
   const reduce = useReducedMotion();
   const go = start || reduce;
 
-  const container: Variants = {
-    hidden: {},
-    show: {
-      transition: {
-        staggerChildren: reduce ? 0 : 0.2,
-        delayChildren: reduce ? 0 : 0.15,
-      },
-    },
-  };
-
-  const item: Variants = {
-    hidden: { opacity: 0, y: reduce ? 0 : 24 },
-    show: { opacity: 1, y: 0, transition: { duration: reduce ? 0 : 0.9, ease: EASE } },
+  // Line mask-rise, sequenced by index (avoids nested-stagger pitfalls).
+  const line: Variants = {
+    hidden: { y: reduce ? "0%" : "115%" },
+    show: (i: number) => ({
+      y: "0%",
+      transition: { duration: reduce ? 0 : 0.9, delay: reduce ? 0 : 0.1 + i * 0.12, ease: EASE },
+    }),
   };
 
   const rule: Variants = {
-    hidden: { scaleX: 0, opacity: 0 },
-    show: { scaleX: 1, opacity: 1, transition: { duration: reduce ? 0 : 0.9, ease: EASE } },
+    hidden: { scaleX: reduce ? 1 : 0, opacity: reduce ? 1 : 0 },
+    show: {
+      scaleX: 1,
+      opacity: 1,
+      transition: { duration: reduce ? 0 : 0.9, delay: reduce ? 0 : 0.1 + 4 * 0.12, ease: EASE },
+    },
   };
 
   return (
     <section className="relative h-[100svh] w-full overflow-hidden">
-      {/* background photo — slow 1.08 → 1 zoom once the hero is live */}
+      {/* background photo — crossed handoff scale then slow ambient zoom.
+          Keyframes: 1.15 (loader) → 1.0 (~1.8s settle) → 1.04 (12s ambient). */}
       <motion.div
-        className="absolute inset-0"
-        initial={{ scale: reduce ? 1 : 1.08 }}
-        animate={{ scale: go && !reduce ? 1 : reduce ? 1 : 1.08 }}
-        transition={{ duration: 9, ease: "linear" }}
+        className="absolute inset-0 will-change-transform"
+        initial={{ scale: reduce ? 1 : 1.15 }}
+        animate={{ scale: reduce ? 1 : go ? [1.15, 1.0, 1.04] : 1.15 }}
+        transition={{ duration: 13.8, times: [0, 0.13, 1], ease: EASE }}
       >
         <Image
           src={HERO_IMAGE}
@@ -53,36 +53,51 @@ export default function Hero({ start }: { start: boolean }) {
         />
       </motion.div>
 
-      {/* scrim: keep white text legible over any photo */}
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/25 to-ink/10" />
-
-      {/* content */}
+      {/* scrim fades in with the handoff so text stays legible over the photo */}
       <motion.div
-        variants={container}
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/25 to-ink/10"
+        initial={{ opacity: reduce ? 1 : 0 }}
+        animate={{ opacity: go ? 1 : 0 }}
+        transition={{ duration: reduce ? 0 : 1.2, ease: EASE }}
+      />
+
+      {/* content cascade */}
+      <motion.div
         initial="hidden"
         animate={go ? "show" : "hidden"}
         className="relative z-10 flex h-full flex-col items-center justify-center px-6 pb-[max(2rem,env(safe-area-inset-bottom))] text-center text-paper"
       >
-        <motion.p
-          variants={item}
-          className="mb-6 text-[0.7rem] font-medium uppercase tracking-[0.26em] text-paper/75"
-        >
-          Together with their families
-        </motion.p>
+        <span className="mb-6 block overflow-hidden">
+          <motion.span
+            variants={line}
+            custom={0}
+            className="block text-[0.7rem] font-medium uppercase tracking-[0.26em] text-paper/75"
+          >
+            Together with their families
+          </motion.span>
+        </span>
 
         <h1 className="font-display text-hero-name font-light leading-[0.94]">
-          <motion.span variants={item} className="block">
-            {WEDDING.groom}
-          </motion.span>
-          <motion.span
-            variants={item}
-            className="my-1 block text-[0.42em] font-normal text-lime"
-          >
-            &amp;
-          </motion.span>
-          <motion.span variants={item} className="block">
-            {WEDDING.bride}
-          </motion.span>
+          <span className="block overflow-hidden pb-[0.06em]">
+            <motion.span variants={line} custom={1} className="block">
+              {WEDDING.groom}
+            </motion.span>
+          </span>
+          <span className="block overflow-hidden py-[0.04em]">
+            <motion.span
+              variants={line}
+              custom={2}
+              className="block text-[0.42em] font-normal text-lime"
+            >
+              &amp;
+            </motion.span>
+          </span>
+          <span className="block overflow-hidden pb-[0.06em]">
+            <motion.span variants={line} custom={3} className="block">
+              {WEDDING.bride}
+            </motion.span>
+          </span>
         </h1>
 
         <motion.span
@@ -91,12 +106,15 @@ export default function Hero({ start }: { start: boolean }) {
           className="mt-7 block h-[3px] w-[50px] origin-center rounded-full bg-lime"
         />
 
-        <motion.p
-          variants={item}
-          className="mt-6 text-sm tracking-wide text-paper/85"
-        >
-          {WEDDING.dateDisplay} · {WEDDING.venue}
-        </motion.p>
+        <span className="mt-6 block overflow-hidden">
+          <motion.span
+            variants={line}
+            custom={5}
+            className="block text-sm tracking-wide text-paper/85"
+          >
+            {WEDDING.dateDisplay} · {WEDDING.venue}
+          </motion.span>
+        </span>
       </motion.div>
 
       {/* quiet scroll cue */}

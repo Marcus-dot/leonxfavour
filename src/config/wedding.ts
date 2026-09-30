@@ -9,6 +9,8 @@ export interface StoryFrame {
   src: string;
   alt: string;
   caption: string;
+  width: number;  // intrinsic px — drives aspect ratio so faces are never cropped
+  height: number;
 }
 
 export const WEDDING = {
@@ -46,12 +48,12 @@ export const WEDDING = {
 // ---- Our Story: photos 1→6 IN ORDER (the bride's requested sequence) -------
 // Captions are Leon's to review/reword. Keep them short.
 export const STORY: StoryFrame[] = [
-  { src: "/story/1.webp", alt: "Leon by the 'Will You Marry Me?' floral heart",     caption: "The question, asked." },
-  { src: "/story/2.webp", alt: "Placing the ring on Favour's hand",                 caption: "And the answer we already knew." },
-  { src: "/story/3.webp", alt: "Leon kissing Favour's hand",                        caption: "A promise, sealed." },
-  { src: "/story/4.webp", alt: "The ring, with the neon sign behind",               caption: "Yes — a thousand times." },
-  { src: "/story/5.webp", alt: "The bouquet ribbon reading 'Future Mrs Chansa'",    caption: "Future Mrs Chansa." },
-  { src: "/story/6.webp", alt: "Leon and Favour embracing",                         caption: "Forward, together." },
+  { src: "/story/1.webp", alt: "Leon by the 'Will You Marry Me?' floral heart",     caption: "The question, asked.",            width: 1034, height: 1400 },
+  { src: "/story/2.webp", alt: "Placing the ring on Favour's hand",                 caption: "And the answer we already knew.", width: 1153, height: 1364 },
+  { src: "/story/3.webp", alt: "Leon kissing Favour's hand",                        caption: "A promise, sealed.",             width: 1187, height: 1326 },
+  { src: "/story/4.webp", alt: "The ring, with the neon sign behind",               caption: "Yes — a thousand times.",        width: 1180, height: 1333 },
+  { src: "/story/5.webp", alt: "The bouquet ribbon reading 'Future Mrs Chansa'",    caption: "Future Mrs Chansa.",             width: 1050, height: 1400 },
+  { src: "/story/6.webp", alt: "Leon and Favour embracing",                         caption: "Forward, together.",             width: 931,  height: 1400 },
 ];
 
 // Hero uses photo 6 (the embrace).

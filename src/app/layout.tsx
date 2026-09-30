@@ -1,6 +1,7 @@
 // Self-hosted via next/font: no layout shift, no external request, fast on mobile.
 import { Fraunces, Inter } from "next/font/google";
 import { WEDDING } from "@/config/wedding";
+import SmoothScroll from "@/components/SmoothScroll";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
@@ -43,7 +44,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
-      <body className="font-body">{children}</body>
+      <body className="font-body">
+        <SmoothScroll>{children}</SmoothScroll>
+      </body>
     </html>
   );
 }
