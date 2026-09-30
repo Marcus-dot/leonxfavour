@@ -6,10 +6,10 @@ import RsvpForm from "./RsvpForm";
 
 const EASE = [0.22, 0.61, 0.36, 1] as const;
 
-// The moment of commitment: a dark ink panel with a faint lime radial glow in
-// one corner (budgeted). "Will you join us?" mask-rises (kinetic title #2), the
-// deadline sits below, then the existing RsvpForm. The ink bg bleeds into the
-// footer so the two dark sections read as one continuous passage.
+// The moment of commitment: a clean dark ink panel. "Will you join us?"
+// mask-rises (kinetic title #2), the deadline sits below, then the RsvpForm in
+// a rounded card. The ink bg bleeds into the footer so the two dark sections
+// read as one continuous passage.
 export default function Rsvp() {
   const reduce = useReducedMotion();
 
@@ -28,15 +28,6 @@ export default function Rsvp() {
 
   return (
     <section id="rsvp" className="relative overflow-hidden bg-ink text-ivory">
-      {/* budgeted lime corner glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-40 -top-40 h-96 w-96 rounded-full"
-        style={{
-          background: "radial-gradient(circle, rgba(166,214,8,0.18), transparent 70%)",
-        }}
-      />
-
       <div className="relative mx-auto max-w-2xl px-6 py-[16vh]">
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-15% 0px" }}>
           <h2 className="text-center font-display text-sec-title font-light">
