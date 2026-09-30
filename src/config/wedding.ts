@@ -21,10 +21,12 @@ export const WEDDING = {
   // ---- Date & time --------------------------------------------------------
   // dateISO drives the countdown. Keep it a valid ISO datetime.
   // If the real date is unknown, the countdown renders em-dashes gracefully.
-  dateISO: "2026-12-19T14:00:00",   // ⚠️ PLACEHOLDER — real date unknown ("soon")
-  dateDisplay: "December 2026",     // ⚠️ PLACEHOLDER — e.g. "Saturday, 19 December 2026"
+  // Time still N/A per Leon — 14:00 is a placeholder so the countdown targets
+  // the day; timeDisplay stays "to be confirmed" until Leon gives the hour.
+  dateISO: "2026-10-10T14:00:00",   // date confirmed (Sat 10 Oct 2026); ⚠️ time TBC
+  dateDisplay: "Saturday, 10 October 2026",
   timeDisplay: "Time to be confirmed", // ⚠️ N/A per Leon — e.g. "2:00 PM"
-  dateConfirmed: false,             // set true once dateISO/dateDisplay are final
+  dateConfirmed: true,              // date is final; time still pending
 
   // ---- Venue --------------------------------------------------------------
   venue: "Waterfalls Place",

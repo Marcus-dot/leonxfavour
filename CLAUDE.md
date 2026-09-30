@@ -35,3 +35,15 @@ One hero load sequence. Elsewhere: gentle scroll-reveal (opacity + ~32px rise, ~
 
 ## Build order
 tokens+fonts → loader→hero (nail this first) → story → countdown/details/schedule → RSVP+backend+test → FAQ/footer → reduced-motion + Lighthouse + real-device + deploy.
+## Motion & award-craft (see MOTION-SPEC.md — read it in full)
+Target: "sexiest premium thing they've seen" = art direction + DIRECTED MOTION + 60fps, all three. The model is By-Kin restraint (weighted smooth scroll, editorial type, transitions that make it feel like one continuous surface), NOT WebGL spectacle. A wedding invite on WhatsApp data must load fast.
+
+Stack (keep this small): Lenis (smooth scroll) + Framer Motion (reveals/parallax/mask-rises) + native CSS (hovers). NO GSAP, NO Three.js, NO WebGL — wrong tool, too heavy, dies on mobile.
+
+The signature moves (don't ship plain fades instead):
+- Hero: loader→hero is ONE continuous move (photo scales 1.15→1.0 as loader dissolves). Names do a line-MASK-RISE (text rises out of overflow:hidden), staggered — not opacity fades. Then lime rule draws, meta rises. Subtle 12s ambient zoom after.
+- Story: each photo reveals via clip-path wipe + inner image settling 1.1→1.0; caption line mask-rises 0.15s later; inner image parallaxes ~6-10% slower on scroll.
+- Smooth scroll (Lenis, lerp .1) is the biggest premium tell. Disable entirely under reduced-motion.
+- Buttons: lime fill wipes up from bottom (scaleY on pseudo), press scale .98.
+
+Performance budget (a section isn't done if it breaks these): 60fps on mid-range Android (test DevTools CPU 4x + Fast 3G); animate ONLY transform/opacity; hero photo is LCP (priority, <2.5s); reduced-motion kills Lenis+parallax+clip+zoom and renders final state instantly; test on a REAL phone before "done". One ease everywhere: cubic-bezier(.22,.61,.36,1). Staggers small (0.08–0.15s).
