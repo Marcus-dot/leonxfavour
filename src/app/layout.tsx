@@ -22,7 +22,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://leonandfavour.vercel.app"
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://leonxfavour.vercel.app"
   ),
   title: `${WEDDING.groom} & ${WEDDING.bride}, Wedding Invitation`,
   description: `${WEDDING.groom} and ${WEDDING.bride} invite you to celebrate their wedding at ${WEDDING.venue}, ${WEDDING.venueCity}.`,
