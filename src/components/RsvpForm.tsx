@@ -22,9 +22,10 @@ export default function RsvpForm() {
 
     const name = String(data.get("name") || "").trim();
     const attending = data.get("attending");
-    if (!name || !attending) {
+    const side = data.get("side");
+    if (!name || !attending || !side) {
       setStatus("error");
-      setMessage("Please add your name and let us know if you can make it.");
+      setMessage("Please add your name, whose guest you are, and whether you can make it.");
       return;
     }
     const firstName = name.split(" ")[0];
@@ -50,6 +51,7 @@ export default function RsvpForm() {
           name,
           contact: data.get("email"),
           attending,
+          side, // "favour" or "leon"
           party_size: 1, // one person per card, no plus-ones
           message: data.get("message") || "",
           website: data.get("website") || "", // honeypot, stays empty for humans
@@ -90,6 +92,16 @@ export default function RsvpForm() {
         <div className="flex flex-wrap gap-3">
           <Chip name="attending" value="yes" label="Joyfully accept" />
           <Chip name="attending" value="no" label="Regretfully decline" />
+        </div>
+      </fieldset>
+
+      <fieldset className="mb-6" disabled={done}>
+        <span className="mb-3 block text-xs font-medium uppercase tracking-[0.14em] text-ivory/65">
+          Whose guest are you?
+        </span>
+        <div className="flex flex-wrap gap-3">
+          <Chip name="side" value="favour" label={`${WEDDING.bride}'s side`} />
+          <Chip name="side" value="leon" label={`${WEDDING.groom}'s side`} />
         </div>
       </fieldset>
 

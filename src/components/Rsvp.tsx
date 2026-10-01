@@ -2,14 +2,15 @@
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { WEDDING } from "@/config/wedding";
+import RsvpForm from "./RsvpForm";
 
 const EASE = [0.22, 0.61, 0.36, 1] as const;
 
 // The moment of commitment: a dark ink panel. "Will you / join us?" mask-rises
-// (kinetic title #2), then guests RSVP by calling or WhatsApping either number
-// (one person per card). The ambient light is STATIC, per MOTION-SPEC nothing
-// animates on a timer except the hero zoom and the load cascade. Everything
-// collapses to its final state under reduced-motion.
+// (kinetic title #2), then the RsvpForm in a rounded card, with the phone
+// numbers kept as a fallback. The ambient light is STATIC, per MOTION-SPEC
+// nothing animates on a timer except the hero zoom and the load cascade.
+// Everything collapses to its final state under reduced-motion.
 export default function Rsvp() {
   const reduce = useReducedMotion();
 
@@ -76,48 +77,32 @@ export default function Rsvp() {
             </p>
           </motion.div>
 
-          {/* RSVP by phone, call or WhatsApp either number */}
-          <motion.p variants={softReveal} className="mx-auto mt-14 max-w-md text-center text-sm text-ivory/45 sm:mt-16">
-            Call or message us on WhatsApp to confirm your seat.
-          </motion.p>
-
-          <motion.div
-            variants={reveal}
-            className="mx-auto mt-8 grid max-w-xl gap-4 sm:grid-cols-2"
-          >
-            {WEDDING.rsvpContacts.map((num) => {
-              const digits = num.replace(/[^\d]/g, "");
-              return (
-                <div
-                  key={num}
-                  className="rounded-2xl border border-ivory/10 bg-ivory/[0.025] p-6 text-center backdrop-blur-[2px]"
-                >
-                  <a
-                    href={`tel:${num.replace(/\s/g, "")}`}
-                    className="block font-display text-xl font-light tracking-wide text-ivory transition-colors hover:text-lime"
-                  >
-                    {num}
-                  </a>
-                  <div className="mt-4 flex justify-center gap-3">
-                    <a
-                      href={`tel:${num.replace(/\s/g, "")}`}
-                      className="rounded-full border border-ivory/20 px-5 py-2 text-xs font-medium uppercase tracking-[0.14em] text-ivory transition-colors hover:border-ivory/50"
-                    >
-                      Call
-                    </a>
-                    <a
-                      href={`https://wa.me/${digits}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-full bg-lime px-5 py-2 text-xs font-medium uppercase tracking-[0.14em] text-ink transition-colors hover:bg-[#B9E52A]"
-                    >
-                      WhatsApp
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
+          {/* Form */}
+          <motion.div variants={reveal} className="mx-auto mt-16 max-w-2xl sm:mt-20">
+            <div className="rounded-[2rem] border border-ivory/10 bg-ivory/[0.025] p-6 backdrop-blur-[2px] sm:rounded-[2.5rem] sm:p-10">
+              <RsvpForm />
+            </div>
           </motion.div>
+
+          {/* Fallback: RSVP by phone / WhatsApp */}
+          <motion.p
+            variants={softReveal}
+            className="mx-auto mt-8 max-w-md text-center text-sm leading-7 text-ivory/50"
+          >
+            Prefer to call or message? RSVP on{" "}
+            {WEDDING.rsvpContacts.map((num, i) => (
+              <span key={num}>
+                {i > 0 && " or "}
+                <a
+                  href={`tel:${num.replace(/\s/g, "")}`}
+                  className="whitespace-nowrap text-ivory/80 underline decoration-ivory/25 underline-offset-4 transition-colors hover:text-lime"
+                >
+                  {num}
+                </a>
+              </span>
+            ))}
+            .
+          </motion.p>
 
           {/* Closing */}
           <motion.div variants={softReveal} className="mx-auto mt-16 max-w-lg text-center sm:mt-24">
