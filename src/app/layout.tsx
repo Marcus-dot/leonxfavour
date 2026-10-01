@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   title: `${WEDDING.groom} & ${WEDDING.bride}, Wedding Invitation`,
   description: `${WEDDING.groom} and ${WEDDING.bride} invite you to celebrate their wedding at ${WEDDING.venue}, ${WEDDING.venueCity}.`,
   openGraph: {
+    // og:image is provided by src/app/opengraph-image.tsx (file convention).
     title: `${WEDDING.groom} & ${WEDDING.bride}`,
     description: `Join us at ${WEDDING.venue}. ${WEDDING.dateDisplay}.`,
-    images: ["/og.jpg"], // generate a 1200x630 share image (photo 6 + names), guests share on WhatsApp
     type: "website",
   },
 };
