@@ -38,13 +38,16 @@ export const WEDDING = {
   receptionMapsUrl: "",             // ⚠️ reception location link
 
   // ---- RSVP ---------------------------------------------------------------
-  rsvpDeadline: "Kindly respond by 30 November 2026", // ⚠️ need a real date
+  rsvpDeadline: "Kindly respond by Tuesday, 6th October",
+  // RSVP contact numbers, shown in the RSVP section. While the form is in demo
+  // mode these are how guests actually respond, so they're surfaced, not hidden.
+  rsvpContacts: ["+260 97 7694819", "+260 96 8399657"],
   // Leave rsvpEndpoint empty for demo mode (front-end only, no submit).
   // Formspree: "https://formspree.io/f/xxxxxx"
   // Your DRF:  "/api/rsvp/"
   rsvpEndpoint: "",                 // ⚠️ set before launch
   // Fallback shown if the RSVP submit fails (so no response is ever lost):
-  rsvpFallbackContact: "WhatsApp us at +260 …", // ⚠️ Leon's number
+  rsvpFallbackContact: "WhatsApp us on +260 97 7694819 or +260 96 8399657",
 } as const;
 
 // ---- Our Story: photos 1→6 IN ORDER (the bride's requested sequence) -------
@@ -64,9 +67,9 @@ export const HERO_IMAGE = "/story/6.webp";
 // ---- Schedule (times provisional until ceremony time is confirmed) ---------
 export const SCHEDULE = [
   { time: "9:30hrs",   title: "Marriage Blessing",       note: "Lifeline Community Fellowship Church" },
-  { time: "To follow", title: "Reception & Celebration", note: "Waterfalls Place, Lusaka" },
+  { time: "17:00hrs", title: "Reception & Celebration", note: "Waterfalls Place, Lusaka" },
 ] as const;
-export const SCHEDULE_PROVISIONAL = true; // shows the "times to be confirmed" note
+export const SCHEDULE_PROVISIONAL = false; // times now confirmed by Leon
 
 // ---- FAQ (Leon to confirm answers) -----------------------------------------
 export const FAQ = [
@@ -75,4 +78,5 @@ export const FAQ = [
   { q: "Where does the day take place?", a: "The marriage blessing is held at Lifeline Community Fellowship Church, and the reception follows at Waterfalls Place, both in Lusaka. Location links will be shared closer to the day." },
   { q: "What time should I arrive?", a: "Please aim to be seated by 9:30hrs so the blessing can begin on time." },
   { q: "Is there parking?", a: "Yes, parking is available at the venue. Details to follow closer to the day." },
+  { q: "What about gifts?", a: "Your presence is the greatest gift. For those who wish to bless us further, we warmly welcome a contribution from a minimum of K500, placed in an envelope." },
 ] as const;

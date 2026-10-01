@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-// Favicon: a small lime ampersand on ink — the couple's monogram, on brand.
+// Favicon: a small lime ampersand on ink, the couple's monogram, on brand.
 export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
 
