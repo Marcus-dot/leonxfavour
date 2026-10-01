@@ -1,21 +1,22 @@
-// Self-hosted via next/font: no layout shift, no external request, fast on mobile.
-import { Fraunces, Inter } from "next/font/google";
+// Self-hosted variable fonts via next/font/local: no layout shift, and NO
+// build-time Google fetch (so a flaky network can never fail the build).
+import localFont from "next/font/local";
 import { WEDDING } from "@/config/wedding";
 import SmoothScroll from "@/components/SmoothScroll";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  style: ["normal", "italic"],
+const fraunces = localFont({
+  src: [
+    { path: "./fonts/fraunces-latin.woff2", style: "normal" },
+    { path: "./fonts/fraunces-latin-italic.woff2", style: "italic" },
+  ],
   variable: "--font-fraunces",
   display: "swap",
 });
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+const inter = localFont({
+  src: [{ path: "./fonts/inter-latin.woff2", style: "normal" }],
   variable: "--font-inter",
   display: "swap",
 });
