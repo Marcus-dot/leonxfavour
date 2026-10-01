@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { WEDDING } from "@/config/wedding";
 import type { RsvpRow } from "@/lib/db";
 
@@ -34,6 +34,36 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
   const [rows, setRows] = useState(initialRows);
   const [deleting, setDeleting] = useState<number | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
+  const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
+
+  // Live updates: refetch on an interval and whenever the tab regains focus, so
+  // new RSVPs appear without a manual reload.
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/rsvps", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (Array.isArray(data.rows)) {
+        setRows(data.rows);
+        setUpdatedAt(new Date());
+      }
+    } catch {
+      /* transient; next tick will retry */
+    }
+  }, []);
+
+  useEffect(() => {
+    if (dbError) return;
+    const id = setInterval(refresh, 20000);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") refresh();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [refresh, dbError]);
 
   const total = rows.length;
   const accepted = rows.filter((r) => r.attending === "yes").length;
@@ -118,6 +148,15 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
               {WEDDING.groom} <span className="text-lime-deep">&amp;</span> {WEDDING.bride}
             </p>
             <h1 className="mt-1.5 font-display text-4xl font-light leading-none">The guest list</h1>
+            {!dbError && (
+              <p className="mt-2.5 flex items-center gap-1.5 text-[0.62rem] text-sage">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-lime-deep" />
+                Updating live
+                {updatedAt
+                  ? ` · ${updatedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+                  : ""}
+              </p>
+            )}
           </div>
           <div className="flex gap-2">
             <button
@@ -153,29 +192,29 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
               <Stat label="Confirmed" value={confirmed} />
             </div>
 
-            {/* Filters */}
-            <div className="mt-8 flex flex-wrap gap-2">
-              {(
-                [
-                  ["all", `All (${total})`],
-                  ["yes", `Accepted (${accepted})`],
-                  ["no", `Declined (${declined})`],
-                  ["favour", `${WEDDING.bride} (${favour})`],
-                  ["leon", `${WEDDING.groom} (${leon})`],
-                ] as [Filter, string][]
-              ).map(([key, text]) => (
-                <button
-                  key={key}
-                  onClick={() => setFilter(key)}
-                  className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
-                    filter === key
-                      ? "bg-ink text-ivory"
-                      : "border border-line text-ink-soft hover:border-ink/30"
-                  }`}
+            {/* Filter dropdown */}
+            <div className="mt-8 flex items-center justify-between gap-4">
+              <div className="relative">
+                <select
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value as Filter)}
+                  className="cursor-pointer appearance-none rounded-full border border-line bg-paper py-2.5 pl-5 pr-11 text-sm font-medium text-ink outline-none transition-colors hover:border-ink/30 focus:border-ink/40"
                 >
-                  {text}
-                </button>
-              ))}
+                  <option value="all">All guests ({total})</option>
+                  <option value="yes">Accepted ({accepted})</option>
+                  <option value="no">Declined ({declined})</option>
+                  <option value="favour">{WEDDING.bride}&rsquo;s side ({favour})</option>
+                  <option value="leon">{WEDDING.groom}&rsquo;s side ({leon})</option>
+                </select>
+                <svg
+                  aria-hidden
+                  viewBox="0 0 24 24"
+                  className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft"
+                >
+                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <span className="text-xs text-sage">{visible.length} shown</span>
             </div>
 
             {/* List */}
