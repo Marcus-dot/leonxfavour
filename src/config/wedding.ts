@@ -76,7 +76,7 @@ export const FAQ = [
   { q: "Can I bring a plus-one?", a: "Each invitation admits one person, so we're unable to accommodate plus-ones. Thank you for understanding, it helps us keep the day intimate." },
   { q: "What about gifts?", a: "Your presence is the greatest gift. For those who wish to bless us further, we warmly welcome a contribution from a minimum of K500, placed in an envelope." },
   { q: "What time should I arrive?", a: "Please aim to be seated by 9:30hrs so the blessing can begin on time." },
-  { q: "Where does the day take place?", a: "The marriage blessing is held at Lifeline Community Fellowship Church, and the reception follows at Waterfalls Place, both in Lusaka. Location links will be shared closer to the day." },
+  { q: "Where does the day take place?", a: "The marriage blessing is held at Lifeline Community Fellowship Church, and the reception follows at Waterfalls Place, both in Lusaka." },
   { q: "What should I wear?", a: "There's no dress code, simply come in whatever makes you feel wonderful and ready to celebrate with us." },
   { q: "Can I bring my children?", a: "As much as we adore your little ones, we've chosen to make this an adults-only celebration. We hope it gives you a chance to relax and enjoy the day with us." },
 ] as const;
