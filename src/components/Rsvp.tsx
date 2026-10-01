@@ -84,17 +84,21 @@ export default function Rsvp() {
             </div>
           </motion.div>
 
-          {/* Fallback: RSVP by phone / WhatsApp */}
+          {/* Fallback: RSVP on WhatsApp (taps open a chat) */}
           <motion.p
             variants={softReveal}
             className="mx-auto mt-8 max-w-md text-center text-sm leading-7 text-ivory/50"
           >
-            Prefer to call or message? RSVP on{" "}
+            Prefer to message us? RSVP on WhatsApp{" "}
             {WEDDING.rsvpContacts.map((num, i) => (
               <span key={num}>
                 {i > 0 && " or "}
                 <a
-                  href={`tel:${num.replace(/\s/g, "")}`}
+                  href={`https://wa.me/${num.replace(/[^\d]/g, "")}?text=${encodeURIComponent(
+                    `Hi! I'd like to RSVP for ${WEDDING.groom} & ${WEDDING.bride}'s wedding.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="whitespace-nowrap text-ivory/80 underline decoration-ivory/25 underline-offset-4 transition-colors hover:text-lime"
                 >
                   {num}
