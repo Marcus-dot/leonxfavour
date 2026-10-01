@@ -112,7 +112,7 @@ export default function Hero({ start }: { start: boolean }) {
             custom={5}
             className="block text-sm tracking-wide text-paper/85"
           >
-            {WEDDING.dateDisplay} · {WEDDING.venue}
+            {WEDDING.dateDisplay}
           </motion.span>
         </span>
       </motion.div>

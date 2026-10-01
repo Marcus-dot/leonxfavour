@@ -4,7 +4,8 @@ import Story from "@/components/Story";
 import Details from "@/components/Details";
 import Schedule from "@/components/Schedule";
 import Rsvp from "@/components/Rsvp";
-import { WEDDING } from "@/config/wedding";
+import Faq from "@/components/Faq";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -18,23 +19,16 @@ export default function Home() {
       {/* Our Story — photos 1→6 (step 3) */}
       <Story />
 
-      {/* The Day / The Place + Schedule (step 4) */}
+      {/* The Day / The Venues + Schedule (step 4) */}
       <Details />
       <Schedule />
 
       {/* RSVP — dark panel (step 5) */}
       <Rsvp />
 
-      {/* Placeholder for FAQ + Footer — replaced in step 6. */}
-      <section className="flex min-h-[30svh] flex-col items-center justify-center px-6 text-center">
-        <span aria-hidden className="mb-6 block h-px w-10 bg-line" />
-        <p className="max-w-xs text-sm leading-relaxed text-sage">
-          FAQ and footer arrive next.
-        </p>
-        <p className="mt-4 text-xs uppercase tracking-[0.24em] text-sage/70">
-          {WEDDING.hashtag}
-        </p>
-      </section>
+      {/* FAQ + Footer (step 6) — Faq ivory, Footer shares the RSVP ink */}
+      <Faq />
+      <Footer />
     </main>
   );
 }

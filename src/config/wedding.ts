@@ -28,11 +28,14 @@ export const WEDDING = {
   timeDisplay: "9:30hrs",           // invite time (actual blessing 10:00hrs — do not display)
   dateConfirmed: true,              // date & time final
 
-  // ---- Venue --------------------------------------------------------------
-  // Marriage blessing venue per Leon. Reception venue not yet confirmed.
-  venue: "Lifeline Community Fellowship Church",
+  // ---- Venues -------------------------------------------------------------
+  // Two venues: the marriage blessing (ceremony), then the reception.
+  venue: "Lifeline Community Fellowship Church", // blessing / ceremony
   venueCity: "Lusaka, Zambia",
-  venueMapsUrl: "",                 // ⚠️ Leon to share the location link
+  venueMapsUrl: "",                 // ⚠️ Leon to share the blessing location link
+  receptionVenue: "Waterfalls Place", // reception
+  receptionCity: "Lusaka, Zambia",
+  receptionMapsUrl: "",             // ⚠️ reception location link
 
   // ---- RSVP ---------------------------------------------------------------
   rsvpDeadline: "Kindly respond by 30 November 2026", // ⚠️ need a real date
@@ -61,7 +64,7 @@ export const HERO_IMAGE = "/story/6.webp";
 // ---- Schedule (times provisional until ceremony time is confirmed) ---------
 export const SCHEDULE = [
   { time: "9:30hrs",   title: "Marriage Blessing",       note: "Lifeline Community Fellowship Church" },
-  { time: "To follow", title: "Reception & Celebration", note: "Details shared closer to the day" },
+  { time: "To follow", title: "Reception & Celebration", note: "Waterfalls Place, Lusaka" },
 ] as const;
 export const SCHEDULE_PROVISIONAL = true; // shows the "times to be confirmed" note
 
@@ -69,7 +72,7 @@ export const SCHEDULE_PROVISIONAL = true; // shows the "times to be confirmed" n
 export const FAQ = [
   { q: "What should I wear?", a: "The dress code is formal. Our colours are white and lime green — you're warmly invited to lean into the palette, though it's not required. We'd gently ask guests to avoid full bridal white." },
   { q: "Can I bring a plus-one?", a: "Please check your invitation — it will say if a guest is included. If you're unsure, just reach out to us directly." },
-  { q: "Where does the day take place?", a: "The marriage blessing is held at Lifeline Community Fellowship Church in Lusaka. Details for the reception to follow will be shared closer to the day." },
+  { q: "Where does the day take place?", a: "The marriage blessing is held at Lifeline Community Fellowship Church, and the reception follows at Waterfalls Place — both in Lusaka. Location links will be shared closer to the day." },
   { q: "What time should I arrive?", a: "Please aim to be seated by 9:30hrs so the blessing can begin on time." },
   { q: "Is there parking?", a: "Yes, parking is available at the venue. Details to follow closer to the day." },
 ] as const;
