@@ -29,10 +29,11 @@ export async function POST(req: Request) {
   const name = String(body.name ?? "").trim();
   const attending = String(body.attending ?? "");
   const side = String(body.side ?? "");
-  const contact = String(body.contact ?? "").trim();
+  const contact = String(body.contact ?? "").trim(); // phone
+  const email = String(body.email ?? "").trim();
   const message = String(body.message ?? "").trim();
 
-  if (!name || (attending !== "yes" && attending !== "no")) {
+  if (!name || !contact || (attending !== "yes" && attending !== "no")) {
     return NextResponse.json({ error: "Missing or invalid fields" }, { status: 400 });
   }
 
@@ -41,8 +42,8 @@ export async function POST(req: Request) {
     const sql = getSql();
     const reference = makeReference();
     await sql`
-      INSERT INTO rsvps (name, contact, attending, side, message, reference)
-      VALUES (${name}, ${contact || null}, ${attending}, ${side || null}, ${message || null}, ${reference})
+      INSERT INTO rsvps (name, contact, email, attending, side, message, reference)
+      VALUES (${name}, ${contact}, ${email || null}, ${attending}, ${side || null}, ${message || null}, ${reference})
     `;
     return NextResponse.json({ ok: true, reference });
   } catch (e) {

@@ -75,13 +75,14 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
 
   function exportCsv() {
     const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-    const header = ["Name", "Contact", "Attending", "Side", "Reference", "Confirmed", "Note", "Submitted"];
+    const header = ["Name", "Phone", "Email", "Attending", "Side", "Reference", "Confirmed", "Note", "Submitted"];
     const lines = [header.map(esc).join(",")];
     for (const r of rows) {
       lines.push(
         [
           r.name,
           r.contact,
+          r.email,
           r.attending === "yes" ? "Accepted" : "Declined",
           r.side === "favour" ? WEDDING.bride : r.side === "leon" ? WEDDING.groom : "",
           r.reference,
@@ -193,6 +194,7 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
                       <div className="min-w-0">
                         <p className="truncate font-display text-xl font-light">{r.name}</p>
                         {r.contact && <p className="mt-0.5 truncate text-sm text-ink-soft">{r.contact}</p>}
+                        {r.email && <p className="truncate text-xs text-sage">{r.email}</p>}
                       </div>
                       <span
                         className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${

@@ -18,7 +18,7 @@ export default async function AdminPage() {
     await ensureTable();
     const sql = getSql();
     const data = await sql<RsvpRow[]>`
-      SELECT id, name, contact, attending, side, message, reference, confirmed, created_at
+      SELECT id, name, contact, email, attending, side, message, reference, confirmed, created_at
       FROM rsvps
       ORDER BY created_at DESC
     `;

@@ -22,11 +22,12 @@ export default function RsvpForm() {
     const data = new FormData(form);
 
     const name = String(data.get("name") || "").trim();
+    const phone = String(data.get("phone") || "").trim();
     const attending = data.get("attending");
     const side = data.get("side");
-    if (!name || !attending || !side) {
+    if (!name || !phone || !attending || !side) {
       setStatus("error");
-      setMessage("Please add your name, whose guest you are, and whether you can make it.");
+      setMessage("Please add your name, phone number, whose guest you are, and whether you can make it.");
       return;
     }
     const firstName = name.split(" ")[0];
@@ -50,7 +51,8 @@ export default function RsvpForm() {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           name,
-          contact: data.get("email"),
+          contact: phone, // phone is the WhatsApp contact
+          email: data.get("email") || "",
           attending,
           side, // "favour" or "leon"
           party_size: 1, // one person per card, no plus-ones
@@ -86,7 +88,8 @@ export default function RsvpForm() {
       </div>
 
       <Field id="name" label="Full name" required placeholder="Your name" disabled={done} />
-      <Field id="email" label="Email or phone" required placeholder="So we can reach you" disabled={done} />
+      <Field id="phone" label="Phone number" type="tel" required placeholder="e.g. 097 7694819" disabled={done} />
+      <Field id="email" label="Email" type="email" placeholder="Optional" disabled={done} />
 
       <fieldset className="mb-6" disabled={done}>
         <span className="mb-3 block text-xs font-medium uppercase tracking-[0.14em] text-ivory/65">
@@ -149,15 +152,18 @@ export default function RsvpForm() {
 }
 
 function Field({
-  id, label, required, placeholder, disabled,
-}: { id: string; label: string; required?: boolean; placeholder?: string; disabled?: boolean }) {
+  id, label, required, placeholder, disabled, type = "text",
+}: { id: string; label: string; required?: boolean; placeholder?: string; disabled?: boolean; type?: string }) {
   return (
     <div className="mb-6">
       <label htmlFor={id} className="mb-3 block text-xs font-medium uppercase tracking-[0.14em] text-ivory/65">
         {label}
       </label>
       <input
-        id={id} name={id} type="text" required={required} placeholder={placeholder} disabled={disabled}
+        id={id} name={id} type={type}
+        inputMode={type === "tel" ? "tel" : type === "email" ? "email" : undefined}
+        autoComplete={type === "tel" ? "tel" : type === "email" ? "email" : undefined}
+        required={required} placeholder={placeholder} disabled={disabled}
         className="w-full border-b border-ivory/25 bg-transparent py-2 text-ivory outline-none placeholder:text-ivory/30 focus:border-lime"
       />
     </div>

@@ -23,6 +23,7 @@ export async function ensureTable() {
       id         serial PRIMARY KEY,
       name       text NOT NULL,
       contact    text,
+      email      text,
       attending  text NOT NULL,
       side       text,
       message    text,
@@ -32,6 +33,7 @@ export async function ensureTable() {
     )
   `;
   // Migrations for tables created before these columns existed.
+  await sql`ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS email text`;
   await sql`ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS reference text`;
   await sql`ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS confirmed boolean NOT NULL DEFAULT false`;
 }
@@ -39,7 +41,8 @@ export async function ensureTable() {
 export interface RsvpRow {
   id: number;
   name: string;
-  contact: string | null;
+  contact: string | null; // phone (used for WhatsApp)
+  email: string | null;
   attending: string;
   side: string | null;
   message: string | null;
