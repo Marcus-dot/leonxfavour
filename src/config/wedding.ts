@@ -73,8 +73,8 @@ export const SCHEDULE_PROVISIONAL = false; // times now confirmed by Leon
 
 // ---- FAQ (Leon to confirm answers) -----------------------------------------
 export const FAQ = [
-  { q: "What should I wear?", a: "The dress code is formal. Our colours are white and lime green, and you're warmly invited to lean into the palette, though it's not required. We'd gently ask guests to avoid full bridal white." },
-  { q: "Can I bring a plus-one?", a: "Please check your invitation. It will say if a guest is included. If you're unsure, just reach out to us directly." },
+  { q: "What should I wear?", a: "There's no dress code, simply come in whatever makes you feel wonderful and ready to celebrate with us." },
+  { q: "Can I bring a plus-one?", a: "Each invitation admits one person, so we're unable to accommodate plus-ones. Thank you for understanding, it helps us keep the day intimate." },
   { q: "Where does the day take place?", a: "The marriage blessing is held at Lifeline Community Fellowship Church, and the reception follows at Waterfalls Place, both in Lusaka. Location links will be shared closer to the day." },
   { q: "What time should I arrive?", a: "Please aim to be seated by 9:30hrs so the blessing can begin on time." },
   { q: "Is there parking?", a: "Yes, parking is available at the venue. Details to follow closer to the day." },

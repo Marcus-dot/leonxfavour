@@ -50,7 +50,7 @@ export default function RsvpForm() {
           name,
           contact: data.get("email"),
           attending,
-          party_size: Number(data.get("guests") || 1),
+          party_size: 1, // one person per card, no plus-ones
           message: data.get("message") || "",
           website: data.get("website") || "", // honeypot, stays empty for humans
         }),
@@ -93,20 +93,6 @@ export default function RsvpForm() {
         </div>
       </fieldset>
 
-      <div className="mb-6">
-        <label htmlFor="guests" className="mb-3 block text-xs font-medium uppercase tracking-[0.14em] text-ivory/65">
-          Number in your party
-        </label>
-        <select
-          id="guests" name="guests" disabled={done}
-          className="w-full border-b border-ivory/25 bg-transparent py-2 text-ivory outline-none focus:border-lime"
-        >
-          <option value="1">Just me</option>
-          {[2, 3, 4, 5].map((n) => (
-            <option key={n} value={n}>{n === 5 ? "5+" : n}</option>
-          ))}
-        </select>
-      </div>
 
       <div className="mb-6">
         <label htmlFor="message" className="mb-3 block text-xs font-medium uppercase tracking-[0.14em] text-ivory/65">
