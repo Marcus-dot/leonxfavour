@@ -43,7 +43,7 @@ export default function InviteCountdown() {
       >
         <p className="mx-auto max-w-[22ch] font-display text-[clamp(1.4rem,5vw,2.1rem)] font-light italic leading-[1.5] text-ink-soft">
           He asked. She said yes. Now we&rsquo;d love for you to be there when we
-          say I&nbsp;do.
+          say &ldquo;I&nbsp;do.&rdquo;
         </p>
       </motion.div>
 

@@ -21,19 +21,18 @@ export const WEDDING = {
   hashtag: "#TheChansas",       // ⚠️ CONFIRM
 
   // ---- Date & time --------------------------------------------------------
-  // dateISO drives the countdown. Keep it a valid ISO datetime.
-  // If the real date is unknown, the countdown renders em-dashes gracefully.
-  // Time still N/A per Leon — 14:00 is a placeholder so the countdown targets
-  // the day; timeDisplay stays "to be confirmed" until Leon gives the hour.
-  dateISO: "2026-10-10T14:00:00",   // date confirmed (Sat 10 Oct 2026); ⚠️ time TBC
-  dateDisplay: "Saturday, 10 October 2026",
-  timeDisplay: "Time to be confirmed", // ⚠️ N/A per Leon — e.g. "2:00 PM"
-  dateConfirmed: true,              // date is final; time still pending
+  // dateISO drives the countdown. The displayed invite time is 9:30hrs (per
+  // Leon) so guests are seated for the 10:00hrs blessing — never surface 10:00.
+  dateISO: "2026-10-10T09:30:00",   // Sat 10 Oct 2026, invite time 9:30hrs
+  dateDisplay: "Saturday, 10th October, 2026",
+  timeDisplay: "9:30hrs",           // invite time (actual blessing 10:00hrs — do not display)
+  dateConfirmed: true,              // date & time final
 
   // ---- Venue --------------------------------------------------------------
-  venue: "Waterfalls Place",
+  // Marriage blessing venue per Leon. Reception venue not yet confirmed.
+  venue: "Lifeline Community Fellowship Church",
   venueCity: "Lusaka, Zambia",
-  venueMapsUrl: "",                 // ⚠️ need a Google Maps link (e.g. https://maps.app.goo.gl/…)
+  venueMapsUrl: "",                 // ⚠️ Leon to share the location link
 
   // ---- RSVP ---------------------------------------------------------------
   rsvpDeadline: "Kindly respond by 30 November 2026", // ⚠️ need a real date
@@ -61,10 +60,8 @@ export const HERO_IMAGE = "/story/6.webp";
 
 // ---- Schedule (times provisional until ceremony time is confirmed) ---------
 export const SCHEDULE = [
-  { time: "1:30 PM", title: "Guests Arrive",        note: "Find your seat and settle in" },
-  { time: "2:00 PM", title: "The Ceremony",         note: "The moment we say I do" },
-  { time: "3:30 PM", title: "Cocktails & Photos",   note: "Celebrate while we capture the day" },
-  { time: "5:00 PM", title: "Reception & Dinner",   note: "Food, toasts and dancing" },
+  { time: "9:30hrs",   title: "Marriage Blessing",       note: "Lifeline Community Fellowship Church" },
+  { time: "To follow", title: "Reception & Celebration", note: "Details shared closer to the day" },
 ] as const;
 export const SCHEDULE_PROVISIONAL = true; // shows the "times to be confirmed" note
 
@@ -72,7 +69,7 @@ export const SCHEDULE_PROVISIONAL = true; // shows the "times to be confirmed" n
 export const FAQ = [
   { q: "What should I wear?", a: "The dress code is formal. Our colours are white and lime green — you're warmly invited to lean into the palette, though it's not required. We'd gently ask guests to avoid full bridal white." },
   { q: "Can I bring a plus-one?", a: "Please check your invitation — it will say if a guest is included. If you're unsure, just reach out to us directly." },
-  { q: "Are the ceremony and reception at the same place?", a: "Yes. Everything takes place at Waterfalls Place, so there's no travel between events on the day." },
-  { q: "What time should I arrive?", a: "Please aim to be seated at least twenty minutes before the ceremony begins so we can start on time." },
+  { q: "Where does the day take place?", a: "The marriage blessing is held at Lifeline Community Fellowship Church in Lusaka. Details for the reception to follow will be shared closer to the day." },
+  { q: "What time should I arrive?", a: "Please aim to be seated by 9:30hrs so the blessing can begin on time." },
   { q: "Is there parking?", a: "Yes, parking is available at the venue. Details to follow closer to the day." },
 ] as const;
