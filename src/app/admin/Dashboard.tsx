@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { WEDDING } from "@/config/wedding";
 import type { RsvpRow } from "@/lib/db";
 
@@ -9,7 +10,22 @@ function sideLabel(side: string | null) {
   return "-";
 }
 
-export default function Dashboard({ rows, dbError }: { rows: RsvpRow[]; dbError: boolean }) {
+export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRow[]; dbError: boolean }) {
+  const [rows, setRows] = useState(initialRows);
+  const [deleting, setDeleting] = useState<number | null>(null);
+
+  async function remove(r: RsvpRow) {
+    if (!window.confirm(`Delete ${r.name}'s RSVP? This can't be undone.`)) return;
+    setDeleting(r.id);
+    const res = await fetch(`/api/admin/rsvp/${r.id}`, { method: "DELETE" });
+    if (res.ok) {
+      setRows((rs) => rs.filter((x) => x.id !== r.id));
+    } else {
+      window.alert("Couldn't delete that one. Please try again.");
+    }
+    setDeleting(null);
+  }
+
   const total = rows.length;
   const accepted = rows.filter((r) => r.attending === "yes").length;
   const declined = rows.filter((r) => r.attending === "no").length;
@@ -103,6 +119,7 @@ export default function Dashboard({ rows, dbError }: { rows: RsvpRow[]; dbError:
                       <th className="px-4 py-3 font-medium">Side</th>
                       <th className="px-4 py-3 font-medium">Note</th>
                       <th className="px-4 py-3 font-medium">Submitted</th>
+                      <th className="px-4 py-3 font-medium"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -125,6 +142,16 @@ export default function Dashboard({ rows, dbError }: { rows: RsvpRow[]; dbError:
                         <td className="max-w-[16rem] px-4 py-3 text-ink-soft">{r.message || "-"}</td>
                         <td className="whitespace-nowrap px-4 py-3 text-sage">
                           {new Date(r.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          <button
+                            onClick={() => remove(r)}
+                            disabled={deleting === r.id}
+                            aria-label={`Delete ${r.name}'s RSVP`}
+                            className="rounded-full px-2.5 py-1 text-xs font-medium text-sage transition-colors hover:bg-[#B0564E]/10 hover:text-[#B0564E] disabled:opacity-40"
+                          >
+                            {deleting === r.id ? "…" : "Delete"}
+                          </button>
                         </td>
                       </tr>
                     ))}
