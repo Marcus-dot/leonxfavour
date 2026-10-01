@@ -48,6 +48,18 @@ html.lenis body {
   pointer-events: none;
 }
 
+/* svh with a vh fallback for older phones that don't support svh units.
+   Old browsers ignore the second declaration and keep 100vh; modern ones
+   apply 100svh (the stable viewport height, ignoring mobile chrome). */
+.h-screen-svh {
+  height: 100vh;
+  height: 100svh;
+}
+.min-h-screen-svh {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
 body {
   background: var(--ivory);
   color: var(--ink);

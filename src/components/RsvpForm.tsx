@@ -6,15 +6,29 @@
 // If the network submit fails, shows the fallback contact so no RSVP is lost.
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { WEDDING } from "@/config/wedding";
 
 type Status = "idle" | "submitting" | "success" | "error";
+
+// Stable-ish unique id, with a fallback for old browsers without crypto.randomUUID.
+function makeId() {
+  try {
+    if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID();
+  } catch {
+    /* fall through */
+  }
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
 
 export default function RsvpForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
   const [reference, setReference] = useState("");
+  // One idempotency key per form session, reused across retries so a slow
+  // network retry never creates a second row. submitting guards double-taps.
+  const idemKey = useRef<string>("");
+  const submitting = useRef(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -44,11 +58,20 @@ export default function RsvpForm() {
       return;
     }
 
+    // Guard against double-taps before React re-disables the button.
+    if (submitting.current) return;
+    if (!idemKey.current) idemKey.current = makeId();
+    submitting.current = true;
     setStatus("submitting");
+
+    // Fail gracefully on a struggling network instead of hanging forever.
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
     try {
       const res = await fetch(WEDDING.rsvpEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           name,
           contact: phone, // phone is the WhatsApp contact
@@ -57,6 +80,7 @@ export default function RsvpForm() {
           side, // "favour" or "leon"
           party_size: 1, // one person per card, no plus-ones
           message: data.get("message") || "",
+          idempotency_key: idemKey.current, // dedupe retries/double-taps
           website: data.get("website") || "", // honeypot, stays empty for humans
         }),
       });
@@ -72,7 +96,10 @@ export default function RsvpForm() {
       form.reset();
     } catch {
       setStatus("error");
-      setMessage(`Something went wrong. Please ${WEDDING.rsvpFallbackContact}.`);
+      setMessage(`The connection seems slow. Please try again, or ${WEDDING.rsvpFallbackContact}.`);
+    } finally {
+      clearTimeout(timeout);
+      submitting.current = false;
     }
   }
 

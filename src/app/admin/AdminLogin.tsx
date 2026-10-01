@@ -26,7 +26,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <main className="flex min-h-[100svh] items-center justify-center bg-ivory px-6">
+    <main className="flex min-h-screen-svh items-center justify-center bg-ivory px-6">
       <div className="w-full max-w-sm">
         <div className="text-center">
           <p className="text-[0.62rem] font-medium uppercase tracking-[0.3em] text-sage">

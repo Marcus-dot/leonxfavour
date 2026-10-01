@@ -32,6 +32,9 @@ export async function POST(req: Request) {
   const contact = String(body.contact ?? "").trim(); // phone
   const email = String(body.email ?? "").trim();
   const message = String(body.message ?? "").trim();
+  // Idempotency: same key (one per form session) only ever creates one row, so
+  // double-taps and network retries can't duplicate a submission.
+  const idempotencyKey = String(body.idempotency_key ?? "").trim() || makeReference();
 
   if (!name || !contact || (attending !== "yes" && attending !== "no")) {
     return NextResponse.json({ error: "Missing or invalid fields" }, { status: 400 });
@@ -41,11 +44,20 @@ export async function POST(req: Request) {
     await ensureTable();
     const sql = getSql();
     const reference = makeReference();
-    await sql`
-      INSERT INTO rsvps (name, contact, email, attending, side, message, reference)
-      VALUES (${name}, ${contact}, ${email || null}, ${attending}, ${side || null}, ${message || null}, ${reference})
+    const inserted = await sql<{ reference: string }[]>`
+      INSERT INTO rsvps (name, contact, email, attending, side, message, reference, idempotency_key)
+      VALUES (${name}, ${contact}, ${email || null}, ${attending}, ${side || null}, ${message || null}, ${reference}, ${idempotencyKey})
+      ON CONFLICT (idempotency_key) DO NOTHING
+      RETURNING reference
     `;
-    return NextResponse.json({ ok: true, reference });
+    if (inserted.length > 0) {
+      return NextResponse.json({ ok: true, reference: inserted[0].reference });
+    }
+    // Duplicate: return the reference from the already-stored submission.
+    const existing = await sql<{ reference: string | null }[]>`
+      SELECT reference FROM rsvps WHERE idempotency_key = ${idempotencyKey} LIMIT 1
+    `;
+    return NextResponse.json({ ok: true, reference: existing[0]?.reference ?? null, duplicate: true });
   } catch (e) {
     console.error("RSVP insert failed:", e);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

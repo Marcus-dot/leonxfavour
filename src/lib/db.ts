@@ -29,6 +29,7 @@ export async function ensureTable() {
       message    text,
       reference  text,
       confirmed  boolean NOT NULL DEFAULT false,
+      idempotency_key text,
       created_at timestamptz NOT NULL DEFAULT now()
     )
   `;
@@ -36,6 +37,9 @@ export async function ensureTable() {
   await sql`ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS email text`;
   await sql`ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS reference text`;
   await sql`ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS confirmed boolean NOT NULL DEFAULT false`;
+  await sql`ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS idempotency_key text`;
+  // Dedupe retries/double-taps: one row per idempotency key (NULLs are distinct).
+  await sql`CREATE UNIQUE INDEX IF NOT EXISTS rsvps_idem_key_uniq ON rsvps (idempotency_key)`;
 }
 
 export interface RsvpRow {

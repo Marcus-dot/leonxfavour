@@ -33,7 +33,7 @@ export default function Hero({ start }: { start: boolean }) {
   };
 
   return (
-    <section className="relative h-[100svh] w-full overflow-hidden">
+    <section className="relative h-screen-svh w-full overflow-hidden">
       {/* background photo, crossed handoff scale then slow ambient zoom.
           Keyframes: 1.15 (loader) → 1.0 (~1.8s settle) → 1.04 (12s ambient). */}
       <motion.div

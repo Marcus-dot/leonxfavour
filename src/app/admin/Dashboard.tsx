@@ -139,7 +139,7 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
   }
 
   return (
-    <main className="min-h-[100svh] bg-ivory px-5 py-10 text-ink sm:px-8 lg:py-14">
+    <main className="min-h-screen-svh bg-ivory px-5 py-10 text-ink sm:px-8 lg:py-14">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <header className="flex flex-wrap items-end justify-between gap-5 border-b border-line pb-7">
