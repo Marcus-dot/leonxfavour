@@ -45,7 +45,7 @@ export const WEDDING = {
   // Leave rsvpEndpoint empty for demo mode (front-end only, no submit).
   // Formspree: "https://formspree.io/f/xxxxxx"
   // Your DRF:  "/api/rsvp/"
-  rsvpEndpoint: "",                 // ⚠️ set before launch
+  rsvpEndpoint: "/api/rsvp",        // custom admin backend (needs DATABASE_URL set)
   // Fallback shown if the RSVP submit fails (so no response is ever lost):
   rsvpFallbackContact: "WhatsApp us on +260 97 7694819 or +260 96 8399657",
 } as const;
