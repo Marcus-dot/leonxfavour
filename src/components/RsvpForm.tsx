@@ -11,9 +11,6 @@ import { WEDDING } from "@/config/wedding";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-const FIELD =
-  "w-full rounded-xl border border-ivory/15 bg-ivory/[0.03] px-4 py-3.5 text-ivory outline-none transition-colors duration-300 ease-soft placeholder:text-ivory/30 focus:border-lime/70 focus:bg-ivory/[0.06]";
-
 export default function RsvpForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -73,14 +70,9 @@ export default function RsvpForm() {
   }
 
   const done = status === "success";
-  const error = status === "error";
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      noValidate
-      className="mx-auto max-w-xl rounded-[28px] border border-ivory/10 bg-ivory/[0.02] p-6 sm:p-8"
-    >
+    <form onSubmit={handleSubmit} noValidate className="mx-auto max-w-xl">
       {/* honeypot: visually hidden, not display:none (bots skip display:none) */}
       <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
         <label>
@@ -88,92 +80,58 @@ export default function RsvpForm() {
         </label>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field id="name" label="Full name" placeholder="Your name" disabled={done} required />
-        <Field id="email" label="Email or phone" placeholder="So we can reach you" disabled={done} required />
-      </div>
+      <Field id="name" label="Full name" required placeholder="Your name" disabled={done} />
+      <Field id="email" label="Email or phone" required placeholder="So we can reach you" disabled={done} />
 
-      <fieldset className="mt-5" disabled={done}>
-        <Label>Will you attend?</Label>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <fieldset className="mb-6" disabled={done}>
+        <span className="mb-3 block text-xs font-medium uppercase tracking-[0.14em] text-ivory/65">
+          Will you attend?
+        </span>
+        <div className="flex flex-wrap gap-3">
           <Chip name="attending" value="yes" label="Joyfully accept" />
           <Chip name="attending" value="no" label="Regretfully decline" />
         </div>
       </fieldset>
 
-      <div className="mt-5">
-        <label htmlFor="guests" className="mb-2 block">
-          <Label>Number in your party</Label>
+      <div className="mb-6">
+        <label htmlFor="guests" className="mb-3 block text-xs font-medium uppercase tracking-[0.14em] text-ivory/65">
+          Number in your party
         </label>
-        <div className="relative">
-          <select
-            id="guests"
-            name="guests"
-            disabled={done}
-            defaultValue="1"
-            className={`${FIELD} cursor-pointer appearance-none pr-11`}
-          >
-            <option value="1" className="bg-ink text-ivory">Just me</option>
-            {[2, 3, 4, 5].map((n) => (
-              <option key={n} value={n} className="bg-ink text-ivory">
-                {n === 5 ? "5 or more" : `${n} of us`}
-              </option>
-            ))}
-          </select>
-          <svg
-            aria-hidden
-            viewBox="0 0 24 24"
-            className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ivory/45"
-          >
-            <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
+        <select
+          id="guests" name="guests" disabled={done}
+          className="w-full border-b border-ivory/25 bg-transparent py-2 text-ivory outline-none focus:border-lime"
+        >
+          <option value="1">Just me</option>
+          {[2, 3, 4, 5].map((n) => (
+            <option key={n} value={n}>{n === 5 ? "5+" : n}</option>
+          ))}
+        </select>
       </div>
 
-      <div className="mt-5">
-        <label htmlFor="message" className="mb-2 block">
-          <Label>
-            A note for us <span className="font-normal normal-case tracking-normal text-ivory/35">(optional)</span>
-          </Label>
+      <div className="mb-6">
+        <label htmlFor="message" className="mb-3 block text-xs font-medium uppercase tracking-[0.14em] text-ivory/65">
+          A note for us <span className="normal-case tracking-normal text-ivory/40">(optional)</span>
         </label>
         <textarea
-          id="message"
-          name="message"
-          rows={3}
-          disabled={done}
+          id="message" name="message" rows={3} disabled={done}
           placeholder="Anything you'd like us to know"
-          className={`${FIELD} resize-none rounded-2xl`}
+          className="w-full rounded-sm border border-ivory/25 bg-transparent p-3 text-ivory outline-none placeholder:text-ivory/30 focus:border-lime"
         />
       </div>
 
       {!done && (
         <button
-          type="submit"
-          disabled={status === "submitting"}
-          className="mt-7 w-full rounded-full bg-lime py-4 font-semibold text-ink transition-all duration-300 ease-soft hover:bg-[#B9E52A] active:scale-[0.99] disabled:opacity-60"
+          type="submit" disabled={status === "submitting"}
+          className="mt-2 w-full rounded-full bg-lime py-4 font-semibold text-ink transition-colors duration-300 ease-soft hover:bg-[#B9E52A] disabled:opacity-60"
         >
-          {status === "submitting" ? "Sending…" : "Send our RSVP"}
+          {status === "submitting" ? "Sending…" : "Send RSVP"}
         </button>
       )}
 
-      <p
-        role="status"
-        aria-live="polite"
-        className={`mt-5 min-h-[1.2em] text-center text-sm ${
-          error ? "text-[#E8B4B4]" : "text-lime"
-        }`}
-      >
+      <p role="status" aria-live="polite" className="mt-5 min-h-[1.2em] text-center text-sm text-lime">
         {message}
       </p>
     </form>
-  );
-}
-
-function Label({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="mb-2 block text-[0.68rem] font-medium uppercase tracking-[0.16em] text-ivory/55">
-      {children}
-    </span>
   );
 }
 
@@ -181,18 +139,13 @@ function Field({
   id, label, required, placeholder, disabled,
 }: { id: string; label: string; required?: boolean; placeholder?: string; disabled?: boolean }) {
   return (
-    <div>
-      <label htmlFor={id}>
-        <Label>{label}</Label>
+    <div className="mb-6">
+      <label htmlFor={id} className="mb-3 block text-xs font-medium uppercase tracking-[0.14em] text-ivory/65">
+        {label}
       </label>
       <input
-        id={id}
-        name={id}
-        type="text"
-        required={required}
-        placeholder={placeholder}
-        disabled={disabled}
-        className={FIELD}
+        id={id} name={id} type="text" required={required} placeholder={placeholder} disabled={disabled}
+        className="w-full border-b border-ivory/25 bg-transparent py-2 text-ivory outline-none placeholder:text-ivory/30 focus:border-lime"
       />
     </div>
   );
@@ -200,9 +153,9 @@ function Field({
 
 function Chip({ name, value, label }: { name: string; value: string; label: string }) {
   return (
-    <label className="relative cursor-pointer">
+    <label className="relative flex-1 cursor-pointer" style={{ minWidth: 140 }}>
       <input type="radio" name={name} value={value} required className="peer absolute opacity-0" />
-      <span className="block rounded-full border border-ivory/20 px-4 py-3.5 text-center text-sm text-ivory transition-all duration-300 ease-soft peer-checked:border-lime peer-checked:bg-lime peer-checked:font-medium peer-checked:text-ink peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-lime">
+      <span className="block rounded-full border border-ivory/25 px-4 py-3.5 text-center text-sm text-ivory transition-all duration-300 ease-soft peer-checked:border-lime peer-checked:bg-lime peer-checked:font-medium peer-checked:text-ink peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-lime">
         {label}
       </span>
     </label>
