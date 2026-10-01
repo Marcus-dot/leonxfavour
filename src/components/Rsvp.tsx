@@ -84,29 +84,44 @@ export default function Rsvp() {
             </div>
           </motion.div>
 
-          {/* Fallback: RSVP on WhatsApp (taps open a chat) */}
-          <motion.p
-            variants={softReveal}
-            className="mx-auto mt-8 max-w-md text-center text-sm leading-7 text-ivory/50"
-          >
-            Prefer to message us? RSVP on WhatsApp{" "}
-            {WEDDING.rsvpContacts.map((num, i) => (
-              <span key={num}>
-                {i > 0 && " or "}
-                <a
-                  href={`https://wa.me/${num.replace(/[^\d]/g, "")}?text=${encodeURIComponent(
-                    `Hi! I'd like to RSVP for ${WEDDING.groom} & ${WEDDING.bride}'s wedding.`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="whitespace-nowrap text-ivory/80 underline decoration-ivory/25 underline-offset-4 transition-colors hover:text-lime"
-                >
-                  {num}
-                </a>
-              </span>
-            ))}
-            .
-          </motion.p>
+          {/* Fallback: RSVP by call or WhatsApp */}
+          <motion.div variants={softReveal} className="mx-auto mt-10 max-w-xl">
+            <p className="text-center text-sm text-ivory/45">
+              Prefer to call or message? RSVP on either number.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {WEDDING.rsvpContacts.map((num) => {
+                const digits = num.replace(/[^\d]/g, "");
+                const waText = encodeURIComponent(
+                  `Hi! I'd like to RSVP for ${WEDDING.groom} & ${WEDDING.bride}'s wedding.`
+                );
+                return (
+                  <div
+                    key={num}
+                    className="rounded-2xl border border-ivory/10 bg-ivory/[0.03] p-5 text-center"
+                  >
+                    <p className="font-display text-lg font-light tracking-wide text-ivory">{num}</p>
+                    <div className="mt-4 flex justify-center gap-2.5">
+                      <a
+                        href={`tel:${num.replace(/\s/g, "")}`}
+                        className="rounded-full border border-ivory/20 px-5 py-2 text-xs font-medium uppercase tracking-[0.14em] text-ivory transition-colors hover:border-ivory/50"
+                      >
+                        Call
+                      </a>
+                      <a
+                        href={`https://wa.me/${digits}?text=${waText}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-full bg-lime px-5 py-2 text-xs font-medium uppercase tracking-[0.14em] text-ink transition-colors hover:bg-[#B9E52A]"
+                      >
+                        WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
 
           {/* Closing */}
           <motion.div variants={softReveal} className="mx-auto mt-16 max-w-lg text-center sm:mt-24">
