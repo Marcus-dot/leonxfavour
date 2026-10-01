@@ -16,17 +16,17 @@ export default function Home() {
       {/* Invite + Countdown (step 4) */}
       <InviteCountdown />
 
-      {/* Our Story — photos 1→6 (step 3) */}
+      {/* Our Story, photos 1→6 (step 3) */}
       <Story />
 
       {/* The Day / The Venues + Schedule (step 4) */}
       <Details />
       <Schedule />
 
-      {/* RSVP — dark panel (step 5) */}
+      {/* RSVP, dark panel (step 5) */}
       <Rsvp />
 
-      {/* FAQ + Footer (step 6) — Faq ivory, Footer shares the RSVP ink */}
+      {/* FAQ + Footer (step 6), Faq ivory, Footer shares the RSVP ink */}
       <Faq />
       <Footer />
     </main>

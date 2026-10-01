@@ -24,12 +24,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://leonandfavour.vercel.app"
   ),
-  title: `${WEDDING.groom} & ${WEDDING.bride} — Wedding Invitation`,
+  title: `${WEDDING.groom} & ${WEDDING.bride}, Wedding Invitation`,
   description: `${WEDDING.groom} and ${WEDDING.bride} invite you to celebrate their wedding at ${WEDDING.venue}, ${WEDDING.venueCity}.`,
   openGraph: {
     title: `${WEDDING.groom} & ${WEDDING.bride}`,
     description: `Join us at ${WEDDING.venue}. ${WEDDING.dateDisplay}.`,
-    images: ["/og.jpg"], // generate a 1200x630 share image (photo 6 + names) — guests share on WhatsApp
+    images: ["/og.jpg"], // generate a 1200x630 share image (photo 6 + names), guests share on WhatsApp
     type: "website",
   },
 };

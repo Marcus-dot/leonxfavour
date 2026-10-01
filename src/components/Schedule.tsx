@@ -2,7 +2,7 @@ import { SCHEDULE, SCHEDULE_PROVISIONAL } from "@/config/wedding";
 import SectionReveal from "./SectionReveal";
 
 // Vertical timeline: time on the left, event on the right, a lime dot on the
-// line at each node (soft glow + ivory ring). One block reveal — not per item.
+// line at each node (soft glow + ivory ring). One block reveal, not per item.
 export default function Schedule() {
   return (
     <section className="mx-auto max-w-2xl px-6 py-[12vh]">

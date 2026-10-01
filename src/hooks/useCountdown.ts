@@ -1,7 +1,7 @@
 // src/hooks/useCountdown.ts
-// SSR-safe countdown. Returns em-dashes until mounted (prevents hydration
-// mismatch — server and first client render must agree) and if the date is
-// unset/invalid. Never renders NaN.
+// SSR-safe countdown. Returns dash placeholders until mounted (prevents
+// hydration mismatch, server and first client render must agree) and if the
+// date is unset/invalid. Never renders NaN.
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,7 +16,7 @@ export interface TimeLeft {
 }
 
 const DASH: TimeLeft = {
-  days: "—", hours: "—", minutes: "—", seconds: "—", isPast: false, valid: false,
+  days: "-", hours: "-", minutes: "-", seconds: "-", isPast: false, valid: false,
 };
 
 const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);

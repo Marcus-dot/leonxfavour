@@ -1,5 +1,5 @@
 /* src/app/globals.css */
-/* Design tokens — the exact palette. Do not invent new colours. */
+/* Design tokens, the exact palette. Do not invent new colours. */
 /* Tailwind maps to these via tailwind.config.ts (see kit). */
 
 @tailwind base;
@@ -8,16 +8,16 @@
 
 :root {
   /* base */
-  --ivory:      #FBFAF6;  /* page background — warm white, not blue-white */
+  --ivory:      #FBFAF6;  /* page background, warm white, not blue-white */
   --paper:      #FFFFFF;  /* pure white */
-  --ink:        #1A1D18;  /* near-black, warm/olive-leaning — NOT #000, NOT blue-black */
+  --ink:        #1A1D18;  /* near-black, warm/olive-leaning, NOT #000, NOT blue-black */
   --ink-soft:   #3E4239;  /* body text on light */
   --sage:       #8A8F82;  /* secondary / muted text, captions, labels */
   --line:       #E4E2D8;  /* hairline dividers */
 
-  /* the one accent — spend it sparingly (see CLAUDE.md §"lime budget") */
-  --lime:       #A6D608;  /* bright lime — GLOWS, rules, active states, fill. Never large text. */
-  --lime-deep:  #5A7302;  /* deep olive-lime — safe for text on ivory */
+  /* the one accent, spend it sparingly (see CLAUDE.md §"lime budget") */
+  --lime:       #A6D608;  /* bright lime, GLOWS, rules, active states, fill. Never large text. */
+  --lime-deep:  #5A7302;  /* deep olive-lime, safe for text on ivory */
   --lime-wash:  #F2F7E2;  /* barely-there lime tint, rare section bg */
 
   --shadow:     24px 40px 80px -40px rgba(40, 50, 20, 0.30);
@@ -58,7 +58,7 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
-/* Global reduced-motion guard — every animated component must also honour this. */
+/* Global reduced-motion guard, every animated component must also honour this. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

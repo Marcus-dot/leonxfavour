@@ -9,7 +9,7 @@ const EASE = [0.22, 0.61, 0.36, 1] as const;
 // The moment of commitment: a dark ink panel that bleeds into the footer so the
 // two dark sections read as one passage. "Will you / join us?" mask-rises
 // (kinetic title #2), then the form in a rounded card. The ambient light is
-// STATIC — per MOTION-SPEC, nothing animates on a timer except the hero zoom and
+// STATIC, per MOTION-SPEC, nothing animates on a timer except the hero zoom and
 // the load cascade. Everything collapses to its final state under reduced-motion.
 export default function Rsvp() {
   const reduce = useReducedMotion();
@@ -29,7 +29,7 @@ export default function Rsvp() {
 
   return (
     <section id="rsvp" className="relative isolate overflow-hidden bg-ink text-ivory">
-      {/* Static atmosphere — soft ivory light + the faintest grain for depth */}
+      {/* Static atmosphere, soft ivory light + the faintest grain for depth */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute -left-[20%] -top-[10%] h-[65vw] max-h-[900px] w-[65vw] max-w-[900px] rounded-full bg-ivory/[0.035] blur-[140px]" />
         <div className="absolute -bottom-[20%] -right-[15%] h-[55vw] max-h-[800px] w-[55vw] max-w-[800px] rounded-full bg-ivory/[0.02] blur-[150px]" />

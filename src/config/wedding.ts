@@ -2,14 +2,14 @@
 // -----------------------------------------------------------------------------
 // SINGLE SOURCE OF TRUTH. Every component reads from here.
 // Nothing about the couple/date/venue should be hardcoded in components.
-// Lines marked ⚠️ are placeholders — confirm with Leon before sharing the link.
+// Lines marked ⚠️ are placeholders, confirm with Leon before sharing the link.
 // -----------------------------------------------------------------------------
 
 export interface StoryFrame {
   src: string;
   alt: string;
   caption: string;
-  width: number;  // intrinsic px — drives aspect ratio so faces are never cropped
+  width: number;  // intrinsic px, drives aspect ratio so faces are never cropped
   height: number;
 }
 
@@ -17,15 +17,15 @@ export const WEDDING = {
   // ---- Couple -------------------------------------------------------------
   groom: "Leon",
   bride: "Favour",
-  surname: "Chansa",            // ⚠️ CONFIRM — read off the "Future Mrs Chansa" bouquet (photo 5)
+  surname: "Chansa",            // ⚠️ CONFIRM, read off the "Future Mrs Chansa" bouquet (photo 5)
   hashtag: "#TheChansas",       // ⚠️ CONFIRM
 
   // ---- Date & time --------------------------------------------------------
   // dateISO drives the countdown. The displayed invite time is 9:30hrs (per
-  // Leon) so guests are seated for the 10:00hrs blessing — never surface 10:00.
+  // Leon) so guests are seated for the 10:00hrs blessing, never surface 10:00.
   dateISO: "2026-10-10T09:30:00",   // Sat 10 Oct 2026, invite time 9:30hrs
   dateDisplay: "Saturday, 10th October, 2026",
-  timeDisplay: "9:30hrs",           // invite time (actual blessing 10:00hrs — do not display)
+  timeDisplay: "9:30hrs",           // invite time (actual blessing 10:00hrs, do not display)
   dateConfirmed: true,              // date & time final
 
   // ---- Venues -------------------------------------------------------------
@@ -53,7 +53,7 @@ export const STORY: StoryFrame[] = [
   { src: "/story/1.webp", alt: "Leon by the 'Will You Marry Me?' floral heart",     caption: "The question, asked.",            width: 1034, height: 1400 },
   { src: "/story/2.webp", alt: "Placing the ring on Favour's hand",                 caption: "And the answer we already knew.", width: 1153, height: 1364 },
   { src: "/story/3.webp", alt: "Leon kissing Favour's hand",                        caption: "A promise, sealed.",             width: 1187, height: 1326 },
-  { src: "/story/4.webp", alt: "The ring, with the neon sign behind",               caption: "Yes — a thousand times.",        width: 1180, height: 1333 },
+  { src: "/story/4.webp", alt: "The ring, with the neon sign behind",               caption: "Yes, a thousand times.",        width: 1180, height: 1333 },
   { src: "/story/5.webp", alt: "The bouquet ribbon reading 'Future Mrs Chansa'",    caption: "Future Mrs Chansa.",             width: 1050, height: 1400 },
   { src: "/story/6.webp", alt: "Leon and Favour embracing",                         caption: "Forward, together.",             width: 931,  height: 1400 },
 ];
@@ -70,9 +70,9 @@ export const SCHEDULE_PROVISIONAL = true; // shows the "times to be confirmed" n
 
 // ---- FAQ (Leon to confirm answers) -----------------------------------------
 export const FAQ = [
-  { q: "What should I wear?", a: "The dress code is formal. Our colours are white and lime green — you're warmly invited to lean into the palette, though it's not required. We'd gently ask guests to avoid full bridal white." },
-  { q: "Can I bring a plus-one?", a: "Please check your invitation — it will say if a guest is included. If you're unsure, just reach out to us directly." },
-  { q: "Where does the day take place?", a: "The marriage blessing is held at Lifeline Community Fellowship Church, and the reception follows at Waterfalls Place — both in Lusaka. Location links will be shared closer to the day." },
+  { q: "What should I wear?", a: "The dress code is formal. Our colours are white and lime green, and you're warmly invited to lean into the palette, though it's not required. We'd gently ask guests to avoid full bridal white." },
+  { q: "Can I bring a plus-one?", a: "Please check your invitation. It will say if a guest is included. If you're unsure, just reach out to us directly." },
+  { q: "Where does the day take place?", a: "The marriage blessing is held at Lifeline Community Fellowship Church, and the reception follows at Waterfalls Place, both in Lusaka. Location links will be shared closer to the day." },
   { q: "What time should I arrive?", a: "Please aim to be seated by 9:30hrs so the blessing can begin on time." },
   { q: "Is there parking?", a: "Yes, parking is available at the venue. Details to follow closer to the day." },
 ] as const;

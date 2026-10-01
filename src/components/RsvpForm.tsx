@@ -29,12 +29,12 @@ export default function RsvpForm() {
     }
     const firstName = name.split(" ")[0];
 
-    // Demo mode — no endpoint configured yet.
+    // Demo mode, no endpoint configured yet.
     if (!WEDDING.rsvpEndpoint) {
       setStatus("success");
       setMessage(
         attending === "yes"
-          ? `Thank you, ${firstName} — we can't wait to celebrate with you.`
+          ? `Thank you, ${firstName}. We can't wait to celebrate with you.`
           : `Thank you for letting us know, ${firstName}. You'll be missed.`
       );
       form.reset();
@@ -52,14 +52,14 @@ export default function RsvpForm() {
           attending,
           party_size: Number(data.get("guests") || 1),
           message: data.get("message") || "",
-          website: data.get("website") || "", // honeypot — stays empty for humans
+          website: data.get("website") || "", // honeypot, stays empty for humans
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
       setStatus("success");
       setMessage(
         attending === "yes"
-          ? `Thank you, ${firstName} — we can't wait to celebrate with you.`
+          ? `Thank you, ${firstName}. We can't wait to celebrate with you.`
           : `Thank you for letting us know, ${firstName}. You'll be missed.`
       );
       form.reset();

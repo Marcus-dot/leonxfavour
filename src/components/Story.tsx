@@ -6,7 +6,7 @@ import StoryFrame from "./StoryFrame";
 
 const EASE = [0.22, 0.61, 0.36, 1] as const;
 
-// "How we got here" — the emotional core. Six frames, 1→6 in order, single
+// "How we got here", the emotional core. Six frames, 1→6 in order, single
 // column on phone, alternating sides on desktop. The title mask-rises in
 // (one of the only two kinetic-type moments on the site).
 export default function Story() {

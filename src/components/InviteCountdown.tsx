@@ -8,7 +8,7 @@ const EASE = [0.22, 0.61, 0.36, 1] as const;
 
 // Warm italic invitation line, then a 4-cell countdown (numerals in --lime-deep,
 // tabular-nums so they don't jitter). Cells mask-rise once on reveal, then just
-// tick. SSR-safe: em-dashes until mounted / if the date is invalid — never NaN.
+// tick. SSR-safe: dash placeholders until mounted / if the date is invalid, never NaN.
 export default function InviteCountdown() {
   const reduce = useReducedMotion();
   const t = useCountdown(WEDDING.dateISO);

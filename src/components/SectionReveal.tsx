@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 const EASE = [0.22, 0.61, 0.36, 1] as const;
 
 // The house reveal: a section block rises into place once (opacity + 40px).
-// Fired on SECTION BLOCKS, not every child — staggering every item is the
+// Fired on SECTION BLOCKS, not every child, staggering every item is the
 // generated-page tell. Renders final state instantly under reduced-motion.
 export default function SectionReveal({
   children,

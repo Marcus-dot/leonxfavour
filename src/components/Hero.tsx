@@ -7,7 +7,7 @@ import { WEDDING, HERO_IMAGE } from "@/config/wedding";
 const EASE = [0.22, 0.61, 0.36, 1] as const;
 
 // Full-bleed photo 6. The loader→hero is ONE continuous move: as the loader
-// dissolves the photo scales 1.15→1.0 and the scrim fades in — the loader
+// dissolves the photo scales 1.15→1.0 and the scrim fades in, the loader
 // becomes the hero. Names rise out of masks (not fades); the rule draws; the
 // meta rises. Then a very slow ambient zoom keeps the photo alive.
 export default function Hero({ start }: { start: boolean }) {
@@ -34,7 +34,7 @@ export default function Hero({ start }: { start: boolean }) {
 
   return (
     <section className="relative h-[100svh] w-full overflow-hidden">
-      {/* background photo — crossed handoff scale then slow ambient zoom.
+      {/* background photo, crossed handoff scale then slow ambient zoom.
           Keyframes: 1.15 (loader) → 1.0 (~1.8s settle) → 1.04 (12s ambient). */}
       <motion.div
         className="absolute inset-0 will-change-transform"

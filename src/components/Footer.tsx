@@ -1,7 +1,7 @@
 import { WEDDING } from "@/config/wedding";
 import SectionReveal from "./SectionReveal";
 
-// Dark footer — shares the ink background with the RSVP panel above so the two
+// Dark footer, shares the ink background with the RSVP panel above so the two
 // read as one continuous dark passage. Lime spent only on the rule and the
 // hashtag (budgeted) + the small & in the names.
 export default function Footer() {

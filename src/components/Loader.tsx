@@ -5,11 +5,11 @@ import { useEffect, useRef, useState } from "react";
 import { WEDDING } from "@/config/wedding";
 
 const EASE = [0.22, 0.61, 0.36, 1] as const;
-const MIN_MS = 2600; // felt, not skipped — also the counter's climb window
+const MIN_MS = 2600; // felt, not skipped, also the counter's climb window
 const MAX_MS = 5000; // hard safety: a slow asset never traps a guest
 
 // Ivory overlay. The names are set at editorial title-page scale and each line
-// RISES OUT OF A MASK (Leon → & → Favour, staggered) — the signature "typeset"
+// RISES OUT OF A MASK (Leon → & → Favour, staggered), the signature "typeset"
 // gesture, not a flat fade. A split 0→100 counter climbs in the corners (number
 // bottom-left, % top-right). At dismiss the whole panel LIFTS to reveal the hero.
 //
@@ -17,7 +17,7 @@ const MAX_MS = 5000; // hard safety: a slow asset never traps a guest
 // and intimate on phones; wide and grand on desktop (names go side-by-side ≥800px).
 //
 // NOTE: this exits by lifting itself and calls onDone when the lift completes. In
-// the parent <Intro>, REMOVE any `exit={{ opacity: 0 }}` on the loader — the lift
+// the parent <Intro>, REMOVE any `exit={{ opacity: 0 }}` on the loader, the lift
 // is the exit now.
 export default function Loader({ onDone }: { onDone: () => void }) {
   const reduce = useReducedMotion();
@@ -94,7 +94,7 @@ export default function Loader({ onDone }: { onDone: () => void }) {
         if (lifting) onDone();
       }}
     >
-      {/* split counter — corners */}
+      {/* split counter, corners */}
       <span className="pointer-events-none absolute bottom-[5vh] left-[6vw] font-display text-[clamp(2.5rem,7vw,4.5rem)] font-light leading-none text-ink [font-variant-numeric:tabular-nums]">
         {count}
       </span>
@@ -102,7 +102,7 @@ export default function Loader({ onDone }: { onDone: () => void }) {
         %
       </span>
 
-      {/* names — editorial scale, each line rises out of a mask */}
+      {/* names, editorial scale, each line rises out of a mask */}
       <div className="flex flex-col items-center leading-[0.9] md:flex-row md:items-baseline md:gap-[0.3em]">
         <span className="overflow-hidden px-[0.05em]">
           <motion.span
