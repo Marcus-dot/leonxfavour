@@ -14,6 +14,7 @@ type Status = "idle" | "submitting" | "success" | "error";
 export default function RsvpForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
+  const [reference, setReference] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -58,6 +59,8 @@ export default function RsvpForm() {
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
+      const result = await res.json().catch(() => ({} as { reference?: string }));
+      if (attending === "yes" && result.reference) setReference(String(result.reference));
       setStatus("success");
       setMessage(
         attending === "yes"
@@ -129,6 +132,18 @@ export default function RsvpForm() {
       <p role="status" aria-live="polite" className="mt-5 min-h-[1.2em] text-center text-sm text-lime">
         {message}
       </p>
+
+      {reference && (
+        <div className="mt-4 rounded-2xl border border-lime/40 bg-lime/[0.06] p-5 text-center">
+          <p className="text-[0.62rem] font-medium uppercase tracking-[0.2em] text-ivory/55">
+            Your reference
+          </p>
+          <p className="mt-1 font-display text-3xl font-light tracking-wide text-lime">{reference}</p>
+          <p className="mt-2 text-xs leading-relaxed text-ivory/55">
+            Please keep this and present it at the entrance.
+          </p>
+        </div>
+      )}
     </form>
   );
 }

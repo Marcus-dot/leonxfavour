@@ -10,6 +10,25 @@ function sideLabel(side: string | null) {
   return "-";
 }
 
+// Normalise a contact into a WhatsApp number (Zambia). Returns "" if the guest
+// gave an email / no usable number.
+function waNumber(contact: string | null) {
+  const d = (contact || "").replace(/[^\d]/g, "");
+  if (!d) return "";
+  if (d.startsWith("260")) return d;
+  if (d.startsWith("0")) return "260" + d.slice(1);
+  if (d.length === 9) return "260" + d;
+  return d;
+}
+
+function confirmationMessage(name: string, reference: string | null) {
+  return (
+    `Hello ${name}, your RSVP for ${WEDDING.groom} & ${WEDDING.bride}'s wedding is confirmed. ` +
+    `Reference: ${reference || "(pending)"}. ` +
+    `Please keep this message and present it at the entrance.`
+  );
+}
+
 export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRow[]; dbError: boolean }) {
   const [rows, setRows] = useState(initialRows);
   const [deleting, setDeleting] = useState<number | null>(null);
@@ -26,6 +45,23 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
     setDeleting(null);
   }
 
+  function sendConfirmation(r: RsvpRow) {
+    const phone = waNumber(r.contact);
+    if (!phone) {
+      window.alert(`${r.name} didn't leave a phone number (email only), so WhatsApp isn't possible for them.`);
+      return;
+    }
+    const text = encodeURIComponent(confirmationMessage(r.name, r.reference));
+    window.open(`https://wa.me/${phone}?text=${text}`, "_blank", "noopener");
+    // Mark confirmed optimistically (Leon can still re-send later).
+    setRows((rs) => rs.map((x) => (x.id === r.id ? { ...x, confirmed: true } : x)));
+    fetch(`/api/admin/rsvp/${r.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ confirmed: true }),
+    }).catch(() => {});
+  }
+
   const total = rows.length;
   const accepted = rows.filter((r) => r.attending === "yes").length;
   const declined = rows.filter((r) => r.attending === "no").length;
@@ -34,7 +70,7 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
 
   function exportCsv() {
     const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-    const header = ["Name", "Contact", "Attending", "Side", "Note", "Submitted"];
+    const header = ["Name", "Contact", "Attending", "Side", "Reference", "Confirmed", "Note", "Submitted"];
     const lines = [header.map(esc).join(",")];
     for (const r of rows) {
       lines.push(
@@ -43,6 +79,8 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
           r.contact,
           r.attending === "yes" ? "Accepted" : "Declined",
           r.side === "favour" ? WEDDING.bride : r.side === "leon" ? WEDDING.groom : "",
+          r.reference,
+          r.confirmed ? "Yes" : "No",
           r.message,
           new Date(r.created_at).toLocaleString(),
         ]
@@ -110,16 +148,17 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
               <p className="mt-16 text-center text-sm text-sage">No RSVPs yet.</p>
             ) : (
               <div className="mt-8 overflow-x-auto rounded-2xl border border-line bg-paper">
-                <table className="w-full min-w-[640px] text-left text-sm">
+                <table className="w-full min-w-[860px] text-left text-sm">
                   <thead>
                     <tr className="border-b border-line text-[0.62rem] uppercase tracking-[0.14em] text-sage">
                       <th className="px-4 py-3 font-medium">Name</th>
                       <th className="px-4 py-3 font-medium">Contact</th>
                       <th className="px-4 py-3 font-medium">Attending</th>
                       <th className="px-4 py-3 font-medium">Side</th>
+                      <th className="px-4 py-3 font-medium">Reference</th>
                       <th className="px-4 py-3 font-medium">Note</th>
                       <th className="px-4 py-3 font-medium">Submitted</th>
-                      <th className="px-4 py-3 font-medium"></th>
+                      <th className="px-4 py-3 text-right font-medium">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -139,19 +178,36 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
                           </span>
                         </td>
                         <td className="px-4 py-3 text-ink-soft">{sideLabel(r.side)}</td>
+                        <td className="whitespace-nowrap px-4 py-3 font-medium text-ink">
+                          {r.reference || "-"}
+                        </td>
                         <td className="max-w-[16rem] px-4 py-3 text-ink-soft">{r.message || "-"}</td>
                         <td className="whitespace-nowrap px-4 py-3 text-sage">
                           {new Date(r.created_at).toLocaleDateString()}
                         </td>
-                        <td className="px-4 py-3 text-right">
-                          <button
-                            onClick={() => remove(r)}
-                            disabled={deleting === r.id}
-                            aria-label={`Delete ${r.name}'s RSVP`}
-                            className="rounded-full px-2.5 py-1 text-xs font-medium text-sage transition-colors hover:bg-[#B0564E]/10 hover:text-[#B0564E] disabled:opacity-40"
-                          >
-                            {deleting === r.id ? "…" : "Delete"}
-                          </button>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center justify-end gap-1.5">
+                            {r.attending === "yes" && (
+                              <button
+                                onClick={() => sendConfirmation(r)}
+                                className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                                  r.confirmed
+                                    ? "border-lime-deep/30 bg-lime-wash text-lime-deep"
+                                    : "border-ink/20 text-ink hover:border-lime-deep/50 hover:text-lime-deep"
+                                }`}
+                              >
+                                {r.confirmed ? "✓ Sent · Resend" : "Send confirmation"}
+                              </button>
+                            )}
+                            <button
+                              onClick={() => remove(r)}
+                              disabled={deleting === r.id}
+                              aria-label={`Delete ${r.name}'s RSVP`}
+                              className="rounded-full px-2.5 py-1 text-xs font-medium text-sage transition-colors hover:bg-[#B0564E]/10 hover:text-[#B0564E] disabled:opacity-40"
+                            >
+                              {deleting === r.id ? "…" : "Delete"}
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}

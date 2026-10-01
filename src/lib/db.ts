@@ -26,9 +26,14 @@ export async function ensureTable() {
       attending  text NOT NULL,
       side       text,
       message    text,
+      reference  text,
+      confirmed  boolean NOT NULL DEFAULT false,
       created_at timestamptz NOT NULL DEFAULT now()
     )
   `;
+  // Migrations for tables created before these columns existed.
+  await sql`ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS reference text`;
+  await sql`ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS confirmed boolean NOT NULL DEFAULT false`;
 }
 
 export interface RsvpRow {
@@ -38,5 +43,7 @@ export interface RsvpRow {
   attending: string;
   side: string | null;
   message: string | null;
+  reference: string | null;
+  confirmed: boolean;
   created_at: string;
 }

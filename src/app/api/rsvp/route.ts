@@ -1,8 +1,17 @@
 import { NextResponse } from "next/server";
+import { randomInt } from "node:crypto";
 import { getSql, ensureTable } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+// Short, readable reference (no ambiguous chars like O/0/I/1/L), e.g. LF-K7F2.
+function makeReference() {
+  const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 4; i++) code += alphabet[randomInt(alphabet.length)];
+  return `LF-${code}`;
+}
 
 // Stores one RSVP. Accepts the JSON the RsvpForm sends. Honeypot submissions
 // are silently accepted (so bots think they succeeded) but never stored.
@@ -30,11 +39,12 @@ export async function POST(req: Request) {
   try {
     await ensureTable();
     const sql = getSql();
+    const reference = makeReference();
     await sql`
-      INSERT INTO rsvps (name, contact, attending, side, message)
-      VALUES (${name}, ${contact || null}, ${attending}, ${side || null}, ${message || null})
+      INSERT INTO rsvps (name, contact, attending, side, message, reference)
+      VALUES (${name}, ${contact || null}, ${attending}, ${side || null}, ${message || null}, ${reference})
     `;
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, reference });
   } catch (e) {
     console.error("RSVP insert failed:", e);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
