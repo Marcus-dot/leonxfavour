@@ -28,12 +28,13 @@ function confirmationMessage(name: string, reference: string | null) {
   );
 }
 
-type Filter = "all" | "yes" | "no" | "favour" | "leon";
+type Filter = "all" | "yes" | "no" | "favour" | "leon" | "confirmed" | "awaiting";
 
 export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRow[]; dbError: boolean }) {
   const [rows, setRows] = useState(initialRows);
   const [deleting, setDeleting] = useState<number | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
+  const [search, setSearch] = useState("");
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
 
   // Live updates: refetch on an interval and whenever the tab regains focus, so
@@ -71,10 +72,26 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
   const favour = rows.filter((r) => r.side === "favour").length;
   const leon = rows.filter((r) => r.side === "leon").length;
   const confirmed = rows.filter((r) => r.confirmed).length;
+  // Accepted guests who haven't had a confirmation sent yet.
+  const awaiting = rows.filter((r) => r.attending === "yes" && !r.confirmed).length;
 
+  const q = search.trim().toLowerCase();
   const visible = rows.filter((r) => {
-    if (filter === "yes" || filter === "no") return r.attending === filter;
-    if (filter === "favour" || filter === "leon") return r.side === filter;
+    const passFilter =
+      filter === "yes" || filter === "no"
+        ? r.attending === filter
+        : filter === "favour" || filter === "leon"
+          ? r.side === filter
+          : filter === "confirmed"
+            ? r.confirmed
+            : filter === "awaiting"
+              ? r.attending === "yes" && !r.confirmed
+              : true;
+    if (!passFilter) return false;
+    if (q) {
+      const hay = `${r.name} ${r.reference ?? ""} ${r.contact ?? ""} ${r.email ?? ""}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
     return true;
   });
 
@@ -192,29 +209,40 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
               <Stat label="Confirmed" value={confirmed} />
             </div>
 
-            {/* Filter dropdown */}
-            <div className="mt-8 flex items-center justify-between gap-4">
-              <div className="relative">
-                <select
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value as Filter)}
-                  className="cursor-pointer appearance-none rounded-full border border-line bg-paper py-2.5 pl-5 pr-11 text-sm font-medium text-ink outline-none transition-colors hover:border-ink/30 focus:border-ink/40"
-                >
-                  <option value="all">All guests ({total})</option>
-                  <option value="yes">Accepted ({accepted})</option>
-                  <option value="no">Declined ({declined})</option>
-                  <option value="favour">{WEDDING.bride}&rsquo;s side ({favour})</option>
-                  <option value="leon">{WEDDING.groom}&rsquo;s side ({leon})</option>
-                </select>
-                <svg
-                  aria-hidden
-                  viewBox="0 0 24 24"
-                  className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft"
-                >
-                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+            {/* Filter + search */}
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="relative">
+                  <select
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value as Filter)}
+                    className="cursor-pointer appearance-none rounded-full border border-line bg-paper py-2.5 pl-5 pr-11 text-sm font-medium text-ink outline-none transition-colors hover:border-ink/30 focus:border-ink/40"
+                  >
+                    <option value="all">All guests ({total})</option>
+                    <option value="yes">Accepted ({accepted})</option>
+                    <option value="no">Declined ({declined})</option>
+                    <option value="favour">{WEDDING.bride}&rsquo;s side ({favour})</option>
+                    <option value="leon">{WEDDING.groom}&rsquo;s side ({leon})</option>
+                    <option value="confirmed">Confirmed ({confirmed})</option>
+                    <option value="awaiting">Awaiting confirmation ({awaiting})</option>
+                  </select>
+                  <svg
+                    aria-hidden
+                    viewBox="0 0 24 24"
+                    className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft"
+                  >
+                    <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search by name…"
+                  className="w-full rounded-full border border-line bg-paper px-5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-sage/60 focus:border-ink/40 sm:w-56"
+                />
               </div>
-              <span className="text-xs text-sage">{visible.length} shown</span>
+              <span className="whitespace-nowrap text-xs text-sage">{visible.length} shown</span>
             </div>
 
             {/* List */}

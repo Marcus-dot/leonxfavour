@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { WEDDING } from "@/config/wedding";
 
 const EASE = [0.22, 0.61, 0.36, 1] as const;
-const MIN_MS = 2600; // felt, not skipped, also the counter's climb window
+const MIN_MS = 1800; // felt, not skipped, also the counter's climb window
 const MAX_MS = 5000; // hard safety: a slow asset never traps a guest
 
 // Ivory overlay. The names are set at editorial title-page scale and each line
