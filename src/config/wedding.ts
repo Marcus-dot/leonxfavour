@@ -71,6 +71,33 @@ export const SCHEDULE = [
 ] as const;
 export const SCHEDULE_PROVISIONAL = false; // times now confirmed by Leon
 
+// ---- Reception: order of proceedings (from Leon's programme) ---------------
+export const PROGRAMME: { title: string; detail?: string }[] = [
+  { title: "Arrival of Guests" },
+  { title: "Introduction and Arrival of the Guest of Honour", detail: "Dr Ted Kamfwa" },
+  { title: "Matron's Introduction Dance" },
+  { title: "Bridal Party Introduction Dance" },
+  { title: "Entrance of the Children" },
+  { title: "Entrance of the Groom and Groomsmen" },
+  { title: "Entrance of the Bride and Bridesmaids" },
+  { title: "Main Dance" },
+  { title: "Opening Prayer", detail: "Mr George Kaumba" },
+  { title: "Welcome Remarks", detail: "Master of Ceremonies" },
+  { title: "Introduction of the Bridal Party" },
+  { title: "Speeches by Family Representatives", detail: "Bride's family: Ivor Mwape, Groom's family: Edyson Chansa" },
+  { title: "Guest of Honour's Speech" },
+  { title: "Serving of Food" },
+  { title: "Games and Entertainment" },
+  { title: "Knife Boy" },
+  { title: "Cake Cutting" },
+  { title: "Cake Presentation to the Parents" },
+  { title: "Toast", detail: "Maid of Honour and Chief Best Man" },
+  { title: "Ball Dance", detail: "Bride and Groom" },
+  { title: "Gift and Couple's Presentation" },
+  { title: "Vote of Thanks and Closing Prayer" },
+  { title: "Opening of the Dance Floor", detail: "Candy Dance: Bridal Party, followed by everyone who knows it" },
+];
+
 // ---- FAQ (Leon to confirm answers) -----------------------------------------
 export const FAQ = [
   { q: "Can I bring a plus-one?", a: "Each invitation admits one person, so we're unable to accommodate plus-ones. Thank you for understanding, it helps us keep the day intimate." },

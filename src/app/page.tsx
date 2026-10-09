@@ -3,6 +3,7 @@ import InviteCountdown from "@/components/InviteCountdown";
 import Story from "@/components/Story";
 import Details from "@/components/Details";
 import Schedule from "@/components/Schedule";
+import Programme from "@/components/Programme";
 import Rsvp from "@/components/Rsvp";
 import Faq from "@/components/Faq";
 import Footer from "@/components/Footer";
@@ -22,6 +23,9 @@ export default function Home() {
       {/* The Day / The Venues + Schedule (step 4) */}
       <Details />
       <Schedule />
+
+      {/* Reception order of proceedings */}
+      <Programme />
 
       {/* RSVP, dark panel (step 5) */}
       <Rsvp />
