@@ -1,7 +1,7 @@
 import { PROGRAMME } from "@/config/wedding";
 import SectionReveal from "./SectionReveal";
 
-// Reception order of proceedings. A quiet numbered list (no lime — off budget),
+// Reception order of proceedings. A quiet numbered list (no lime, off budget),
 // two columns on desktop in reading order, single column on phone.
 export default function Programme() {
   return (
