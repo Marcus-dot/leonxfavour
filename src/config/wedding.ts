@@ -32,7 +32,7 @@ export const WEDDING = {
   // Two venues: the marriage blessing (ceremony), then the reception.
   venue: "Lifeline Community Fellowship Church", // blessing / ceremony
   venueCity: "Lusaka, Zambia",
-  venueMapsUrl: "",                 // ⚠️ Leon to share the blessing location link
+  venueMapsUrl: "https://www.google.com/maps/search/?api=1&query=-15.3928452,28.3655281", // exact pin from Leon (Google's named result was off)
   receptionVenue: "Waterfalls Place", // reception
   receptionCity: "Lusaka, Zambia",
   receptionMapsUrl: "",             // ⚠️ reception location link
