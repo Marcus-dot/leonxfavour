@@ -175,7 +175,13 @@ export default function Dashboard({ rows: initialRows, dbError }: { rows: RsvpRo
               </p>
             )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <a
+              href="/admin/programme"
+              className="rounded-full border border-ink/20 px-5 py-2 text-xs font-medium uppercase tracking-[0.14em] transition-colors hover:border-ink/50"
+            >
+              Edit programme
+            </a>
             <button
               onClick={exportCsv}
               disabled={total === 0}

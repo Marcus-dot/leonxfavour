@@ -1,9 +1,12 @@
-import { PROGRAMME } from "@/config/wedding";
+import { getProgramme } from "@/lib/db";
 import SectionReveal from "./SectionReveal";
 
 // Reception order of proceedings. A quiet numbered list (no lime, off budget),
-// two columns on desktop in reading order, single column on phone.
-export default function Programme() {
+// two columns on desktop in reading order, single column on phone. Items come
+// from the DB (editable in /admin/programme), falling back to the config
+// default so guests always see a valid programme.
+export default async function Programme() {
+  const PROGRAMME = await getProgramme();
   return (
     <section className="mx-auto max-w-3xl px-6 py-[12vh]">
       <SectionReveal>
